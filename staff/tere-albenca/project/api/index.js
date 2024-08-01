@@ -5,13 +5,15 @@ import cors from 'cors'
 import jwt from 'jsonwebtoken'
 import { errors } from 'com'
 import dotenv from 'dotenv'
+import { Work, User } from './data/index.js'
+import { upload } from './config/multer.js'
+import { uploadFile } from './util/uploadFile.js'
+
 
 dotenv.config()
 
 const { JsonWebTokenError, TokenExpiredError } = jwt
 const { ContentError, DuplicityError, MatchError } = errors
-
-
 const { PORT, MONGO_URL, JWT_SECRET } = process.env
 
 mongoose.connect(MONGO_URL)
@@ -22,7 +24,8 @@ mongoose.connect(MONGO_URL)
 
         const jsonBodyParser = express.json() // JSON.parse(...)
 
-        server.use(cors())
+        server.use(cors({}
+        ))
 
         //registerStudent
 
@@ -147,44 +150,45 @@ mongoose.connect(MONGO_URL)
             }
         })
 
-        //createWork
-
-        server.post('/works', jsonBodyParser, (req, res) => {
+        //new create-work
+        //prettier-ignore
+        server.post('/works', upload.fields([{ name: 'image', maxCount: 1 }]), async (req, res) => {
             try {
                 const { authorization } = req.headers
-
-                const token = authorization.slice(7)
+                const token = authorization && authorization.slice(7)
+                if (!token) throw new MatchError('token not provided')
 
                 const { sub: userId } = jwt.verify(token, JWT_SECRET)
+                const { title, text } = req.body;
+                const file = req.files && req.files.image && req.files.image[0];
 
-                const { title, image, text } = req.body
-
-                logic.createWork(userId, title, image, text)
-                    .then(() => res.status(201).send())
-                    .catch(error => {
-                        let status = 500
-
-                        if (error instanceof MatchError)
-                            status = 401
-
-                        res.status(status).json({ error: error.constructor.name, message: error.message })
-                    })
-
-            } catch (error) {
-                let status = 500
-
-                if (error instanceof TypeError || error instanceof RangeError || error instanceof ContentError)
-                    status = 400
-
-                else if (error instanceof JsonWebTokenError || error instanceof TokenExpiredError) {
-                    status = 401
-
-                    error = new MatchError(error.message)
+                if (!file) {
+                    return res.status(400).json({ error: 'No file uploaded' });
                 }
 
-                res.status(status).json({ error: error.constructor.name, message: error.message })
+                const { downloadURL } = await uploadFile(file);
+                const imageUrl = downloadURL;
+
+                const createdWork = await logic.createWork(userId, title, imageUrl, text)
+
+                res.status(201).json(createdWork)
+            } catch (error) {
+                console.error('Error in POST /works:', error.message);
+
+                let status = 500;
+
+                if (error instanceof MatchError) {
+                    status = 401;
+                } else if (error instanceof JsonWebTokenError || error instanceof TokenExpiredError) {
+                    status = 401;
+                    error = new MatchError(error.message);
+                } else if (error instanceof ContentError) {
+                    status = 400;
+                }
+
+                res.status(status).json({ error: error.constructor.name, message: error.message });
             }
-        })
+        });
 
         //removeWork
 
@@ -304,7 +308,7 @@ mongoose.connect(MONGO_URL)
             }
         })
 
-        //retrieveUserWorks
+        // retrieveUserWorks
 
         server.get('/profile/:targetUserId/works', (req, res) => {
             try {
@@ -738,3 +742,73 @@ mongoose.connect(MONGO_URL)
     })
     .catch(error => console.error(error));
 
+
+
+
+// createWork
+
+// server.post('/works', jsonBodyParser, (req, res) => {
+//     try {
+//         const { authorization } = req.headers
+
+//         const token = authorization.slice(7)
+
+//         const { sub: userId } = jwt.verify(token, JWT_SECRET)
+
+//         const { title, image, text } = req.body
+
+//         logic.createWork(userId, title, image, text)
+//             .then(() => res.status(201).send())
+//             .catch(error => {
+//                 let status = 500
+
+//                 if (error instanceof MatchError)
+//                     status = 401
+
+//                 res.status(status).json({ error: error.constructor.name, message: error.message })
+//             })
+
+//     } catch (error) {
+//         let status = 500
+
+//         if (error instanceof TypeError || error instanceof RangeError || error instanceof ContentError)
+//             status = 400
+
+//         else if (error instanceof JsonWebTokenError || error instanceof TokenExpiredError) {
+//             status = 401
+
+//             error = new MatchError(error.message)
+//         }
+
+//         res.status(status).json({ error: error.constructor.name, message: error.message })
+//     }
+// })
+
+
+//retriveUserWorks
+// server.get('/profile/:targetUserId/works', (req, res) => {
+//     try {
+//         const { authorization } = req.headers;
+//         const token = authorization.slice(7);
+//         const { sub: userId } = jwt.verify(token, JWT_SECRET);
+//         const { targetUserId } = req.params;
+
+//         logic.retrieveUserWorks(userId, targetUserId)
+//             .then(works => res.status(200).json(works))
+//             .catch(error => {
+//                 let status = 500;
+//                 if (error instanceof MatchError)
+//                     status = 401;
+//                 res.status(status).json({ error: error.constructor.name, message: error.message });
+//             });
+//     } catch (error) {
+//         let status = 500;
+//         if (error instanceof TypeError || error instanceof RangeError || error instanceof ContentError)
+//             status = 400;
+//         else if (error instanceof JsonWebTokenError || error instanceof TokenExpiredError) {
+//             status = 401;
+//             error = new MatchError(error.message);
+//         }
+//         res.status(status).json({ error: error.constructor.name, message: error.message });
+//     }
+// });

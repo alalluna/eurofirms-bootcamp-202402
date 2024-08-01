@@ -64,6 +64,8 @@ https://www.figma.com/design/TaAkM7JZWBW6s9Qxw5XMWV/project-academy-online?node-
 - Mongo
 - Tailwind
 - JWT
+- Multer
+- Firebase
 
 ## Modules
 

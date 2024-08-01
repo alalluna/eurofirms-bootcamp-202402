@@ -1,1 +1,8 @@
- curl -X POST -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjNiM2ZhMjgzOTI1NThkODkzMjQ5OTAiLCJyb2xlIjoic3R1ZGVudCIsImlhdCI6MTcxNTI2MTg1OCwiZXhwIjoxNzE1MjY1NDU4fQ.jGMGDYPCM0JMET2_TFEKLFdQsOOKF2D9HFlq2-UHI-Q' -H 'Content-type: application/json' -d '{'title':'exercise two', 'image':'https://mir-s3-cdn-cf.behance.net/project_modules/1400/85a973130870077.6189923a30431.jpg','text':'Un dibujo mas'}' http://localhost:9050/works -v
+
+curl -X POST \
+     -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjY4MWJlZTZlY2EwYjFhYzZlMTMyZDUiLCJyb2xlIjoidGVhY2hlciIsImlhdCI6MTcyMTkwNDEyMSwiZXhwIjoxNzIxOTA3NzIxfQ.7GJGg87T2z_fpERsJ5ba7vq9QCqYNlzeouXwnNXzCeA' \
+     -F 'title=logo' \
+     -F 'image=@D:\develop\portfolio\public\images' \
+     -F 'text=el logo de la academia' \
+     http://localhost:9050/works \
+     -v

@@ -1,34 +1,77 @@
 import { User, Work } from '../data/index.js'
-import { errors, validate } from 'com'
-// add format data
-// import { format } from 'date-fns'
+import { validate, errors } from 'com'// Asumiendo que tienes un archivo de utilidades para validar
 
-const { SystemError, MatchError } = errors
+const { SystemError, MatchError, ContentError } = errors
 
-function createWork(userId, title, image, text) {
-    validate.id(userId, 'userId')
-    validate.text(title, 'title')
-    validate.url(image, 'image')
-    validate.text(text, 'text')
+// Función para crear un nuevo trabajo
+async function createWork(userId, title, imageUrl, text) {
+    try {
+        validate.id(userId, 'userId')
+        validate.text(title, 'title')
+        validate.url(imageUrl, 'imageUrl')
+        validate.text(text, 'text')
 
-    return User.findById(userId)
-        .catch(error => { throw new SystemError(error.message) })
-        .then(user => {
-            if (!user)
-                throw new MatchError('user not found')
+        const user = await User.findById(userId)
+        if (!user) {
+            throw new MatchError('User not found')
+        }
 
-            const work = {
-                author: user._id,
-                title,
-                image,
-                text,
-                date: new Date()
-                // date: format(new Date(), 'dd/MM/yyyy HH:mm')
-            }
-            return Work.create(work)
-                .catch(error => { throw new SystemError(error.message) })
-        })
-        .then(work => { })
+        const work = {
+            author: user._id,
+            title,
+            image: imageUrl,
+            text,
+            date: new Date()
+        }
+
+        const createdWork = await Work.create(work)
+        return createdWork
+    } catch (error) {
+        if (error instanceof TypeError || error instanceof RangeError || error instanceof ContentError) {
+            throw new SystemError(error.message)
+        } else {
+            throw error
+        }
+    }
 }
 
+
 export default createWork
+
+
+// import { User, Work } from '../data/index.js'
+// import { validate, errors } from 'com'// Asumiendo que tienes un archivo de utilidades para validar
+// const { SystemError, MatchError } = errors
+
+// async function createWork(userId, title, imageUrl, text) {
+//     try {
+//         validate.id(userId, 'userId')
+//         validate.text(title, 'title')
+//         validate.url(imageUrl, 'imageUrl')
+//         validate.text(text, 'text')
+
+//         const user = await User.findById(userId)
+//         if (!user) {
+//             throw new MatchError('User not found')
+//         }
+
+//         const work = {
+//             author: user._id,
+//             title,
+//             image: imageUrl,
+//             text,
+//             date: new Date()
+//         }
+
+//         const createdWork = await Work.create(work)
+//         return createdWork
+//     } catch (error) {
+//         if (error instanceof TypeError || error instanceof RangeError || error instanceof ContentError) {
+//             throw new SystemError(error.message)
+//         } else {
+//             throw error
+//         }
+//     }
+// }
+
+// export default createWork

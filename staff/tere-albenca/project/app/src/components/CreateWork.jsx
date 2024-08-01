@@ -6,7 +6,9 @@ import { errors } from 'com'
 import Htwo from './Htwo'
 
 
-const { MatchError } = errors
+import React from 'react'
+
+const { MatchError, ContentError } = errors
 
 function CreateWork({ onCancelClick, onWorkCreated }) {
   const handleCancelClick = () => {
@@ -15,34 +17,20 @@ function CreateWork({ onCancelClick, onWorkCreated }) {
     }
   };
 
-  const handleSubmit = event => {
+  const handleSubmit = async event => {
+    // const handleSubmit = event => {
     event.preventDefault()
 
     const form = event.target
     const title = form.title.value
-    const image = form.image.value
+    // const image = form.image.value
+    const imageFile = form.image.files[0]
     const text = form.text.value
 
     try {
-      logic.createWork(title, image, text)
-        .then(() => onWorkCreated())
-        .catch(error => {
-          console.error(error)
 
-          let feedback = error.message
-
-          if (error instanceof TypeError || error instanceof RangeError || error instanceof ContentError)
-            feedback = `${feedback},please correct it`
-
-          else if (error instanceof MatchError)
-            feedback = `${feedback}, use valid data`
-
-          else
-            feedback = 'sorry, there was an error, please try again later'
-
-          alert(feedback)
-        })
-
+      await logic.createWork(title, imageFile, text); // Pasar imageFile en lugar de image
+      onWorkCreated();
 
     } catch (error) {
       console.error(error)
@@ -51,6 +39,8 @@ function CreateWork({ onCancelClick, onWorkCreated }) {
 
       if (error instanceof TypeError || error instanceof RangeError || error instanceof ContentError)
         feedback = `${feedback},please correct it`
+      else if (error instanceof MatchError)
+        feedback = `${feedback}, use valid data`;
       else
         feedback = 'sorry, there was an error, please try again later'
 
@@ -65,7 +55,7 @@ function CreateWork({ onCancelClick, onWorkCreated }) {
         <Htwo className='font-bold text-xl py-2'>CREATE WORK</Htwo>
         <Form onSubmit={handleSubmit}>
           <Input type='text' placeholder='title' id='title' />
-          <Input type='text' placeholder='image' id='image' />
+          <Input type='file' placeholder='Add image' id='image' accept='image/jpg, image/png, application/pdf' />
 
           <Input type='text' placeholder='text' id='text' />
 
@@ -79,3 +69,25 @@ function CreateWork({ onCancelClick, onWorkCreated }) {
 }
 
 export default CreateWork
+
+
+
+
+// logic.createWork(title, image, text)
+//   .then(() => onWorkCreated())
+//   .catch(error => {
+//     console.error(error)
+
+//     let feedback = error.message
+
+//     if (error instanceof TypeError || error instanceof RangeError || error instanceof ContentError)
+//       feedback = `${feedback},please correct it`
+
+//     else if (error instanceof MatchError)
+//       feedback = `${feedback}, use valid data`
+
+//     else
+//       feedback = 'sorry, there was an error, please try again later'
+
+//     alert(feedback)
+//   })

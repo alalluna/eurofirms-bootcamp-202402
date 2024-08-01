@@ -18,6 +18,8 @@ import updateLesson from './updateLesson.js'
 import removeLesson from './removeLesson.js'
 import retrieveLessons from './retrieveLessons.js'
 
+
+
 const logic = {
     authenticateUser,
     createComment,
@@ -38,6 +40,7 @@ const logic = {
     updateLesson,
     removeLesson,
     retrieveLessons
+
 }
 
 export default logic
