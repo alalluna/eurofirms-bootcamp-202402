@@ -24,7 +24,9 @@ mongoose.connect(MONGO_URL)
 
         const jsonBodyParser = express.json() // JSON.parse(...)
 
-        server.use(cors({}
+        server.use(cors({
+            origin: 'https://alalluna.netlify.app'
+        }
         ))
 
         //registerStudent
