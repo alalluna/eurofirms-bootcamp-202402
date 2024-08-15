@@ -70,24 +70,3 @@ function CreateWork({ onCancelClick, onWorkCreated }) {
 
 export default CreateWork
 
-
-
-
-// logic.createWork(title, image, text)
-//   .then(() => onWorkCreated())
-//   .catch(error => {
-//     console.error(error)
-
-//     let feedback = error.message
-
-//     if (error instanceof TypeError || error instanceof RangeError || error instanceof ContentError)
-//       feedback = `${feedback},please correct it`
-
-//     else if (error instanceof MatchError)
-//       feedback = `${feedback}, use valid data`
-
-//     else
-//       feedback = 'sorry, there was an error, please try again later'
-
-//     alert(feedback)
-//   })

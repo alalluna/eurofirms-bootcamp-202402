@@ -24,10 +24,20 @@ mongoose.connect(MONGO_URL)
 
         const jsonBodyParser = express.json() // JSON.parse(...)
 
-        server.use(cors({
-            origin: 'https://alalluna.netlify.app'
-        }
-        ))
+        const allowedOrigins = ['http://localhost:5173', 'https://alalluna.netlify.app']
+
+        // const corsOptions = {
+        //     origin: function (origin, callback) {
+        //         if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+        //             callback(null, true);
+        //         } else {
+        //             callback(new Error('Not allowed by CORS'))
+        //         }
+        //     }
+        // }
+
+        server.use(cors());
+
 
         //registerStudent
 

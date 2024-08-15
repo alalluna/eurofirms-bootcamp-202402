@@ -31,3 +31,4 @@ function Header({ onHomeClick, onCreateClick, onProfileClick, user, onNewTeacher
 }
 
 export default Header
+
