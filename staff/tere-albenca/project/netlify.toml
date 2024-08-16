@@ -1,7 +1,7 @@
 [build]
+  command = "npm install && npm run build"
   publish = "build"
-  command = "npm run build"
-
+ 
 [redirects]
   from = "/*"
   to = "/index.html"

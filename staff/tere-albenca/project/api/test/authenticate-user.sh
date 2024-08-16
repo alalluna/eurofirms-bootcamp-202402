@@ -1,1 +1,1 @@
- curl -X POST -H 'Content-type: application/json' -d '{"email":"terealbenca@gmail.com","password":"123123123"}' http://localhost:9050/users/auth -v
+ curl -X POST -H 'Content-type: application/json' -d '{"email":"terealbenca@gmail.com","password":"123123123"}' https://eurofirms-bootcamp-202402-e1u4.onrender.com/users/auth -v

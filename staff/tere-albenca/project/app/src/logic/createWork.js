@@ -14,7 +14,7 @@ async function createWork(title, imageFile, text) {
 
     try {
         // const response = await fetch(`${import.meta.env.VITE_API_URL}/works`, {
-        const response = await fetch('http://localhost:9050/works', {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/works`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${sessionStorage.token}`
