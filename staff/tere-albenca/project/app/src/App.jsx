@@ -28,6 +28,7 @@ function App() {
 
   const handleProfileClick = (targetUserId) => navigate(`/profile/${targetUserId}`)
   const handleUserProfileClick = (userId) => navigate(`/profile/${userId}`)
+  // Este método debería llamarse solo desde un lugar controlado
   const handleNewTeacherClick = () => navigate('/registerTeacher')
 
   return (
