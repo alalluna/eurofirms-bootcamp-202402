@@ -202,6 +202,11 @@ mongoose.connect(MONGO_URL)
             }
         });
 
+        // server.get("/works", (req, res) => {
+        //     return res.json({ message: "Works" })
+
+        // })
+
         //removeWork
 
         server.delete('/works/:workId', (req, res) => {

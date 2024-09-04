@@ -9,7 +9,7 @@ export async function uploadFile(file) {
     }
 
     const fileBuffer = await sharp(file.buffer)
-        .resize({ width: 200, fit: 'cover' })
+        .resize({ width: 600, fit: 'cover' })
         .toBuffer()
 
     console.log('Processed file buffer:', fileBuffer)
