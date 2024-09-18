@@ -13,7 +13,7 @@
   },
   "type": "module",
   "keywords": [],
-  "author": "",
+  "author": "alalluna",
   "license": "ISC",
   "dependencies": {
     "com": "file:../com",
