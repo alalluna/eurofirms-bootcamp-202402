@@ -1,13 +1,30 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import logic from '../logic'
 import { errors } from 'com'
 import { format } from 'date-fns'
 import Htwo from './Htwo'
+import GiveLikeWorkButton from './GiveLikeWorkButton'
 
 const { MatchError, ContentError } = errors
 
 function Work({ work, onWorkRemoved, onWorkEdit, user, onUserProfileClick }) {
     const [editWork, setEditWork] = useState(false)
+
+    const [isLiked, setIsLiked] = useState(false) // Estado para controlar si está "likeado"
+    const [likeCount, setLikeCount] = useState(0) // Contador de likes
+
+
+
+    useEffect(() => {
+        if (work && work.likes) { // Asegurarse de que work y likes existen antes de acceder a ellos
+            setLikeCount(work.likes.length); // Actualiza el contador de likes con los datos que vengan del servidor
+
+            // Verificar si el usuario ya ha dado "like" a esta obra
+            if (user && work.likes.includes(user.id)) {
+                setIsLiked(true);
+            }
+        }
+    }, [user, work]);
 
     const handleProfileUserClick = () => {
         onUserProfileClick(work.author.id)
@@ -27,7 +44,7 @@ function Work({ work, onWorkRemoved, onWorkEdit, user, onUserProfileClick }) {
                             feedback = `${feedback}, please verify credentials`
                         else
                             feedback = 'Sorry, there was an error, please try again later'
-                        alert(feedback);
+                        alert(feedback)
                     })
             }
         } catch (error) {
@@ -83,6 +100,28 @@ function Work({ work, onWorkRemoved, onWorkEdit, user, onUserProfileClick }) {
         setEditWork(false)
     }
 
+    // Función para manejar el "like" o "unlike"
+    const handleToggleLike = () => {
+        try {
+            logic.giveLikeWork(work.id)
+                .then(() => {
+                    setIsLiked(!isLiked) // Alternar el estado del "like"
+                    setLikeCount(isLiked ? likeCount - 1 : likeCount + 1) // Actualizar el contador
+                })
+                .catch(error => {
+                    console.error('Error al dar o quitar like:', error)
+                })
+        } catch (error) {
+            console.error('Error al intentar dar o quitar like:', error)
+        }
+    }
+
+    // Si work no está definido, muestra un mensaje o devuelve null
+    if (!work || !work.likes) {
+        return <p>Loading...</p>
+    }
+
+
     return (
         <article className="w-full bg-white rounded-lg shadow-md p-4 mb-4">
             <h1 className="font-bold text-lg text-blue-400 cursor-pointer hover:text-blue-700" onClick={handleProfileUserClick}>{work.author.name}</h1>
@@ -112,8 +151,16 @@ function Work({ work, onWorkRemoved, onWorkEdit, user, onUserProfileClick }) {
 
             <img src={work.image} className="w-[90%] rounded-lg mt-4" alt={work.title} />
             <p className="mt-2 text-gray-700 text-sm font-light">{work.text}</p>
-            {/* <time className="block text-right text-xs text-gray-500 mt-2">{work.date}</time> */}
             <p className="block text-right text-xs text-gray-500 mt-2">{format(new Date(work.date), ' HH:mm dd/MM/yyyy')}</p>
+
+            {/* Botón de like */}
+
+
+            <div className="flex items-center space-x-1 mt-2">
+                <GiveLikeWorkButton isLiked={isLiked} onClick={handleToggleLike} />
+                <p className="text-sm text-gray-600 align-text-bottom">{likeCount} likes</p>
+            </div>
+
         </article>
     )
 }

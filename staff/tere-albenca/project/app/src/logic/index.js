@@ -20,6 +20,7 @@ import createLesson from './createLesson.js'
 import updateLesson from './updateLesson.js'
 import removeLesson from './removeLesson.js'
 import retrieveLessons from './retrieveLessons.js'
+import giveLikeWork from './giveLikeWork.js'
 
 const logic = {
     registerStudent,
@@ -43,7 +44,8 @@ const logic = {
     createLesson,
     updateLesson,
     removeLesson,
-    retrieveLessons
+    retrieveLessons,
+    giveLikeWork
 }
 
 export default logic

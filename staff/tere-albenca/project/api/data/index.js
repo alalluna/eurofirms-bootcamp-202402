@@ -57,7 +57,11 @@ const work = new Schema({
     date: {
         type: Date,
         required: true
-    }
+    },
+    likes: [{
+        type: ObjectId,
+        ref: 'User'
+    }]
 })
 
 const lesson = new Schema({

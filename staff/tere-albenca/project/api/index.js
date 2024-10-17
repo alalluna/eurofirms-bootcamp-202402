@@ -25,16 +25,7 @@ mongoose.connect(MONGO_URL)
         const jsonBodyParser = express.json() // JSON.parse(...)
 
         const allowedOrigins = ['http://localhost:5173', 'https://alalluna.netlify.app']
-
-        // const corsOptions = {
-        //     origin: function (origin, callback) {
-        //         if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-        //             callback(null, true);
-        //         } else {
-        //             callback(new Error('Not allowed by CORS'))
-        //         }
-        //     }
-        // }
+        // const allowedOrigins = ['http://localhost:9050', 'https://alalluna.netlify.app']
 
         server.use(cors());
 
@@ -356,6 +347,43 @@ mongoose.connect(MONGO_URL)
                 res.status(status).json({ error: error.constructor.name, message: error.message })
             }
         })
+
+        //like a work
+
+        server.put('/works/:workId/likes', (req, res) => {
+            try {
+                const { authorization } = req.headers
+
+                const token = authorization.slice(7)
+
+                const { sub: userId } = jwt.verify(token, JWT_SECRET)
+
+                const { workId } = req.params
+                logic.giveLikeWork(userId, workId)
+                    .then(() => res.status(204).send())
+                    .catch(error => {
+                        let status = 500
+
+                        if (error instanceof MatchError)
+                            status = 404
+
+                        res.status(status).json({ error: error.constructor.name, message: error.message })
+                    })
+            } catch (error) {
+                let status = 500
+
+                if (error instanceof TypeError || error instanceof RangeError || error instanceof ContentError)
+                    status = 400
+                else if (error instanceof JsonWebTokenError || error instanceof TokenExpiredError) {
+                    status = 401
+
+                    error = new MatchError(error.message)
+                }
+
+                res.status(status).json({ error: error.constructor.name, message: error.message })
+            }
+        })
+
 
         // createComment
 
@@ -758,74 +786,3 @@ mongoose.connect(MONGO_URL)
         server.listen(PORT, () => console.log('API started at port ' + PORT))
     })
     .catch(error => console.error(error));
-
-
-
-
-// createWork
-
-// server.post('/works', jsonBodyParser, (req, res) => {
-//     try {
-//         const { authorization } = req.headers
-
-//         const token = authorization.slice(7)
-
-//         const { sub: userId } = jwt.verify(token, JWT_SECRET)
-
-//         const { title, image, text } = req.body
-
-//         logic.createWork(userId, title, image, text)
-//             .then(() => res.status(201).send())
-//             .catch(error => {
-//                 let status = 500
-
-//                 if (error instanceof MatchError)
-//                     status = 401
-
-//                 res.status(status).json({ error: error.constructor.name, message: error.message })
-//             })
-
-//     } catch (error) {
-//         let status = 500
-
-//         if (error instanceof TypeError || error instanceof RangeError || error instanceof ContentError)
-//             status = 400
-
-//         else if (error instanceof JsonWebTokenError || error instanceof TokenExpiredError) {
-//             status = 401
-
-//             error = new MatchError(error.message)
-//         }
-
-//         res.status(status).json({ error: error.constructor.name, message: error.message })
-//     }
-// })
-
-
-//retriveUserWorks
-// server.get('/profile/:targetUserId/works', (req, res) => {
-//     try {
-//         const { authorization } = req.headers;
-//         const token = authorization.slice(7);
-//         const { sub: userId } = jwt.verify(token, JWT_SECRET);
-//         const { targetUserId } = req.params;
-
-//         logic.retrieveUserWorks(userId, targetUserId)
-//             .then(works => res.status(200).json(works))
-//             .catch(error => {
-//                 let status = 500;
-//                 if (error instanceof MatchError)
-//                     status = 401;
-//                 res.status(status).json({ error: error.constructor.name, message: error.message });
-//             });
-//     } catch (error) {
-//         let status = 500;
-//         if (error instanceof TypeError || error instanceof RangeError || error instanceof ContentError)
-//             status = 400;
-//         else if (error instanceof JsonWebTokenError || error instanceof TokenExpiredError) {
-//             status = 401;
-//             error = new MatchError(error.message);
-//         }
-//         res.status(status).json({ error: error.constructor.name, message: error.message });
-//     }
-// });

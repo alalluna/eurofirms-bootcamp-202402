@@ -1,8 +1,2 @@
 
-curl -X POST \
-     -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjY4MWJlZTZlY2EwYjFhYzZlMTMyZDUiLCJyb2xlIjoidGVhY2hlciIsImlhdCI6MTcyMTkwNDEyMSwiZXhwIjoxNzIxOTA3NzIxfQ.7GJGg87T2z_fpERsJ5ba7vq9QCqYNlzeouXwnNXzCeA' \
-     -F 'title=logo' \
-     -F 'image=@D:\develop\portfolio\public\images' \
-     -F 'text=el logo de la academia' \
-     http://localhost:9050/works \
-     -v
+curl -X POST -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjY4MWJlZTZlY2EwYjFhYzZlMTMyZDUiLCJyb2xlIjoidGVhY2hlciIsImlhdCI6MTcyNzY4OTM0MSwiZXhwIjoxNzI3NjkyOTQxfQ.TEaMmjn_4oGiJnLfKJwWxBzFyFdhGDJYO7grC69JBvg' -F 'title=logo' -F 'image=@C:/Users/terea/OneDrive/Documentos/eurofirms-bootcamp-202402/staff/tere-albenca/project/app/public/images/logo.png' -F 'text=el logo de la academia' http://localhost:9050/works -v

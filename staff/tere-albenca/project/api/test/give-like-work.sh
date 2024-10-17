@@ -1,0 +1,2 @@
+curl  -X PUT -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjY4MWJlZTZlY2EwYjFhYzZlMTMyZDUiLCJyb2xlIjoidGVhY2hlciIsImlhdCI6MTcyNzc3NjE1MywiZXhwIjoxNzI3Nzc5NzUzfQ.Z2_TrGcSY1iFL_VlxXeR_bhLhefr-NlfYW1rBtpa_Ts' http://localhost:9050/works/66fa63cf8af174980beb1644/likes -v
+# falta saber como ver el array de likes < HTTP/1.1 204 No Content
