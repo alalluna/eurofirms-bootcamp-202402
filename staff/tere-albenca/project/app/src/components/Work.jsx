@@ -9,22 +9,22 @@ const { MatchError, ContentError } = errors
 
 function Work({ work, onWorkRemoved, onWorkEdit, user, onUserProfileClick }) {
     const [editWork, setEditWork] = useState(false)
-
     const [isLiked, setIsLiked] = useState(false) // Estado para controlar si está "likeado"
     const [likeCount, setLikeCount] = useState(0) // Contador de likes
-
-
+    const [showLikesList, setShowLikesList] = useState(false) // Estado para manejar la visibilidad de la lista de likes
+    const [likers, setLikers] = useState([])
 
     useEffect(() => {
         if (work && work.likes) { // Asegurarse de que work y likes existen antes de acceder a ellos
-            setLikeCount(work.likes.length); // Actualiza el contador de likes con los datos que vengan del servidor
+            setLikeCount(work.likes.length) // Actualiza el contador de likes con los datos que vengan del servidor
 
             // Verificar si el usuario ya ha dado "like" a esta obra
             if (user && work.likes.includes(user.id)) {
-                setIsLiked(true);
+                setIsLiked(true)
             }
+            setLikers(work.likes)
         }
-    }, [user, work]);
+    }, [user, work])
 
     const handleProfileUserClick = () => {
         onUserProfileClick(work.author.id)
@@ -116,7 +116,10 @@ function Work({ work, onWorkRemoved, onWorkEdit, user, onUserProfileClick }) {
         }
     }
 
-    // Si work no está definido, muestra un mensaje o devuelve null
+    const toggleLikesList = () => {
+        setShowLikesList(prev => !prev)
+    }
+
     if (!work || !work.likes) {
         return <p>Loading...</p>
     }
@@ -153,12 +156,26 @@ function Work({ work, onWorkRemoved, onWorkEdit, user, onUserProfileClick }) {
             <p className="mt-2 text-gray-700 text-sm font-light">{work.text}</p>
             <p className="block text-right text-xs text-gray-500 mt-2">{format(new Date(work.date), ' HH:mm dd/MM/yyyy')}</p>
 
-            {/* Botón de like */}
 
-
-            <div className="flex items-center space-x-1 mt-2">
+            <div
+                className="like flex items-center space-x-1 mt-2"
+                onMouseEnter={toggleLikesList} // Muestra la lista al hacer hover
+                onMouseLeave={toggleLikesList} // Oculta la lista al salir
+                onClick={toggleLikesList} // Alternar visibilidad al hacer clic
+            >
                 <GiveLikeWorkButton isLiked={isLiked} onClick={handleToggleLike} />
                 <p className="text-sm text-gray-600 align-text-bottom">{likeCount} likes</p>
+                {showLikesList && (
+                    <div className="absolute bg-white border rounded shadow-lg max-w-[300px] p-2 mt-2">
+                        {likers.map((likerId, index) => (
+                            <div key={index} className="text-center">{/* Ajusta aquí para usar el nombre y apellido del usuario */}
+                                {/* Suponiendo que tienes un método para obtener el nombre del usuario por ID */}
+                                {user.name + ' ' +
+                                    user.surname} {/* Cambia esto por el nombre del usuario */}
+                            </div>
+                        ))}
+                    </div>
+                )}
             </div>
 
         </article>

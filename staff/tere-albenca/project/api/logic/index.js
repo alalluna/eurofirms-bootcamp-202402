@@ -18,6 +18,7 @@ import updateLesson from './updateLesson.js'
 import removeLesson from './removeLesson.js'
 import retrieveLessons from './retrieveLessons.js'
 import giveLikeWork from './giveLikeWork.js'
+import getUserDetailsByIds from './getUserDetailsByIds.js'
 
 
 
@@ -41,7 +42,8 @@ const logic = {
     updateLesson,
     removeLesson,
     retrieveLessons,
-    giveLikeWork
+    giveLikeWork,
+    getUserDetailsByIds
 
 }
 

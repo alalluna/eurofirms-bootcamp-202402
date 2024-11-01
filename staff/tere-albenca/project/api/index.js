@@ -782,7 +782,46 @@ mongoose.connect(MONGO_URL)
             }
         })
 
+        server.post('/users/details', (req, res) => {
+            try {
+                const { authorization } = req.headers
 
+                if (!authorization || !authorization.startsWith('Bearer ')) {
+                    throw new MatchError('invalid token')
+                }
+
+                const token = authorization.slice(7)
+                const { sub: userId } = jwt.verify(token, JWT_SECRET)
+
+                const { userIds } = req.body
+
+                getUserDetailsByIds(userIds)
+                    .then(users => res.status(200).json(users))
+                    .catch(error => {
+                        let status = 500
+
+                        if (error instanceof MatchError) {
+                            status = 401
+                        } else if (error instanceof TypeError || error instanceof RangeError || error instanceof ContentError) {
+                            status = 400
+                        }
+
+                        res.status(status).json({ error: error.constructor.name, message: error.message })
+                    })
+
+            } catch (error) {
+                let status = 500
+
+                if (error instanceof TypeError || error instanceof RangeError || error instanceof ContentError) {
+                    status = 400
+                } else if (error instanceof JsonWebTokenError || error instanceof TokenExpiredError) {
+                    status = 401
+                    error = new MatchError(error.message)
+                }
+
+                res.status(status).json({ error: error.constructor.name, message: error.message })
+            }
+        })
         server.listen(PORT, () => console.log('API started at port ' + PORT))
     })
     .catch(error => console.error(error));
