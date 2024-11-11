@@ -25,9 +25,13 @@ mongoose.connect(MONGO_URL)
         const jsonBodyParser = express.json() // JSON.parse(...)
 
         const allowedOrigins = ['http://localhost:5173', 'https://alalluna.netlify.app']
-        // const allowedOrigins = ['http://localhost:9050', 'https://alalluna.netlify.app']
 
-        server.use(cors());
+        // server.use(cors());
+        server.use(cors({
+            origin: ['http://localhost:5173', 'https://alalluna.netlify.app'],
+            methods: ['GET', 'POST', 'PUT', 'DELETE'],
+            allowedHeaders: ['Content-Type', 'Authorization']
+        }));
 
 
         //registerStudent
