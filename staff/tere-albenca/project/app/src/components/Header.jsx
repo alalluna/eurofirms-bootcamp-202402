@@ -1,6 +1,6 @@
 function Header({ onHomeClick, onCreateClick, onProfileClick, user, onNewTeacherClick }) {
     return (
-        <header className='max-h-[50px] border-b border-black fixed top-0 left-0 w-full bg-blue-400 box-border'>
+        <header className='max-h-[50px] border-b border-black fixed top-0 left-0 w-full bg-blue-400 box-border z-50'>
             <div className='flex justify-between items-center'>
                 <div>
                     <button onClick={onHomeClick} className='bg-transparent border-none p-0 cursor-pointer'>

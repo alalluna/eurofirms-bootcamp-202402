@@ -80,51 +80,53 @@ function Home({ onUserLoggedOut, onHomeClick, onProfileClick, onUserProfileClick
   }
 
   return (
-    <div className='m-0 p-0 max-w-[100%]'>
-      <Header
-        onHomeClick={handleHomeClick}
-        onCreateClick={handleCreateClick}
-        onProfileClick={handleProfileClick}
-        onNewTeacherClick={onNewTeacherClick}
-        user={user}
-      />
-      <main className='w-[100%] bg-[whitesmoke]'>
-        <div className='w-[100%] flex justify-center items-center'>
-          <form className='mt-16' onSubmit={handleSearchWorks}>
-            <input
-              name="query"
-              type="text"
-              className="border border-gray-500 rounded-md px-4 py-2 mb-4"
-              placeholder="Search works..."
-            />
-            <button
-              type="submit"
-              className="bg-blue-400 text-white rounded-md px-4 py-2 ml-2 hover:bg-blue-500"
-            >Search
-            </button>
-            <button
-              type="button"
-              onClick={handleCancelSearch}
-              className="bg-blue-400 text-white rounded-md px-4 py-2 ml-2 hover:bg-blue-500"
-            >X
-            </button>
-          </form>
-        </div>
-
-        <Works
+    <div className='flex justify-center m-0 p-0 bg-gray-100'>
+      <div className='w-full sm:w-1/2 md:w-1/3 px-4'>
+        <Header
+          onHomeClick={handleHomeClick}
+          onCreateClick={handleCreateClick}
+          onProfileClick={handleProfileClick}
+          onNewTeacherClick={onNewTeacherClick}
           user={user}
-          refreshStamp={refreshStamp}
-          searchQuery={searchQuery}
-          onUserProfileClick={handleProfileUserClick}
         />
-        {view === 'createWork' && (
-          <CreateWork
-            onWorkCreated={handleCreatedWork}
-            onCancelClick={handleCancelClick}
+        <main className='w-[100%] bg-[whitesmoke]'>
+          <div className='w-[100%] flex justify-center items-center'>
+            <form className='mt-16' onSubmit={handleSearchWorks}>
+              <input
+                name="query"
+                type="text"
+                className="border border-gray-500 rounded-md px-4 py-2 mb-4"
+                placeholder="Search works..."
+              />
+              <button
+                type="submit"
+                className="bg-blue-400 text-white rounded-md px-4 py-2 ml-2 hover:bg-blue-500"
+              >Search
+              </button>
+              <button
+                type="button"
+                onClick={handleCancelSearch}
+                className="bg-blue-400 text-white rounded-md px-4 py-2 ml-2 hover:bg-blue-500"
+              >X
+              </button>
+            </form>
+          </div>
+
+          <Works
+            user={user}
+            refreshStamp={refreshStamp}
+            searchQuery={searchQuery}
+            onUserProfileClick={handleProfileUserClick}
           />
-        )}
-      </main>
-      <Footer onLogout={handleLogout} />
+          {view === 'createWork' && (
+            <CreateWork
+              onWorkCreated={handleCreatedWork}
+              onCancelClick={handleCancelClick}
+            />
+          )}
+        </main>
+        <Footer onLogout={handleLogout} />
+      </div>
     </div>
   )
 }

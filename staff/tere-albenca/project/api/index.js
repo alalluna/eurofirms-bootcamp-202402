@@ -26,12 +26,12 @@ mongoose.connect(MONGO_URL)
 
         const allowedOrigins = ['http://localhost:5173', 'https://alalluna.netlify.app']
 
-        // server.use(cors());
-        server.use(cors({
-            origin: ['http://localhost:5173', 'https://alalluna.netlify.app'],
-            methods: ['GET', 'POST', 'PUT', 'DELETE'],
-            allowedHeaders: ['Content-Type', 'Authorization']
-        }));
+        server.use(cors());
+        // server.use(cors({
+        //     origin: ['http://localhost:5173', 'https://alalluna.netlify.app'],
+        //     methods: ['GET', 'POST', 'PUT', 'DELETE'],
+        //     allowedHeaders: ['Content-Type', 'Authorization']
+        // }));
 
 
         //registerStudent

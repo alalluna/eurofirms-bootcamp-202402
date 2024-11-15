@@ -61,21 +61,21 @@ function Profile({ onUserLoggedOut, onHomeClick, onProfileClick, onNewTeacherCli
     }
 
     return (
-        <div className='m-0 p-0 max-w-[100%]'>
-            <Header
-                onHomeClick={handleHomeClick}
-                onCreateClick={handleCreateClick}
-                onProfileClick={handleProfileClick}
-                onNewTeacherClick={onNewTeacherClick}
-                user={user}
-            />
-            <main className='w-[100%] bg-[whitesmoke]'>
-                <UserWorks targetUserId={targetUserId} refreshStamp={refreshStamp} user={user} isProfilePage={true} onProfileClick={() => { }} /> { }
-                {view === 'createWork' && <CreateWork onWorkCreated={handleCreatedWork} onCancelClick={handleCancelClick} />}
-            </main>
-
-            <Footer onLogout={handleLogout} />
-
+        <div className='flex justify-center m-0 p-0  bg-gray-100'>
+            <div className='w-full sm:w-1/2 md:w-1/3 px-4'>
+                <Header
+                    onHomeClick={handleHomeClick}
+                    onCreateClick={handleCreateClick}
+                    onProfileClick={handleProfileClick}
+                    onNewTeacherClick={onNewTeacherClick}
+                    user={user}
+                />
+                <main className='w-full bg-[whitesmoke]'>
+                    <UserWorks targetUserId={targetUserId} refreshStamp={refreshStamp} user={user} isProfilePage={true} onProfileClick={() => { }} />
+                    {view === 'createWork' && <CreateWork onWorkCreated={handleCreatedWork} onCancelClick={handleCancelClick} />}
+                </main>
+                <Footer onLogout={handleLogout} />
+            </div>
         </div>
     )
 }

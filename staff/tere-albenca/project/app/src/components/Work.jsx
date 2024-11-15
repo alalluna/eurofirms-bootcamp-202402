@@ -101,20 +101,46 @@ function Work({ work, onWorkRemoved, onWorkEdit, user, onUserProfileClick }) {
     }
 
     // Función para manejar el "like" o "unlike"
+    // const handleToggleLike = () => {
+    //     try {
+    //         logic.giveLikeWork(work.id)
+    //             .then(() => {
+    //                 setIsLiked(!isLiked) // Alternar el estado del "like"
+    //                 setLikeCount(isLiked ? likeCount - 1 : likeCount + 1) // Actualizar el contador
+    //             })
+    //             .catch(error => {
+    //                 console.error('Error al dar o quitar like:', error)
+    //             })
+    //     } catch (error) {
+    //         console.error('Error al intentar dar o quitar like:', error)
+    //     }
+    // }
     const handleToggleLike = () => {
         try {
             logic.giveLikeWork(work.id)
                 .then(() => {
                     setIsLiked(!isLiked) // Alternar el estado del "like"
                     setLikeCount(isLiked ? likeCount - 1 : likeCount + 1) // Actualizar el contador
+
+                    // Actualizar la lista de likers sin necesidad de recargar la página
+                    setLikers(prevLikers => {
+                        if (isLiked) {
+                            // Si el like se está quitando, eliminar el usuario de la lista
+                            return prevLikers.filter(liker => liker !== user.id);
+                        } else {
+                            // Si el like se está dando, agregar el usuario a la lista
+                            return [...prevLikers, user.id];
+                        }
+                    });
                 })
                 .catch(error => {
-                    console.error('Error al dar o quitar like:', error)
+                    console.error('Error al dar o quitar like:', error);
                 })
         } catch (error) {
-            console.error('Error al intentar dar o quitar like:', error)
+            console.error('Error al intentar dar o quitar like:', error);
         }
     }
+
 
     const toggleLikesList = () => {
         setShowLikesList(prev => !prev)
@@ -134,7 +160,6 @@ function Work({ work, onWorkRemoved, onWorkEdit, user, onUserProfileClick }) {
                     <div className="flex space-x-2">
                         <button className="px-1.5 py-0.5 bg-gray-200 rounded-md text-sm shadow-md hover:bg-gray-300 hover:shadow-lg active:bg-gray-400 active:shadow-xl transition-all duration-200" onClick={handleShowForm}>✏️</button>
                         <button className="px-1.5 py-0.5 bg-gray-200 rounded-md text-white text-l font-bold shadow-md hover:bg-gray-300 hover:shadow-lg active:bg-gray-400 active:shadow-xl transition-all duration-200" onClick={handleRemoveWork}>❌</button>
-
                     </div>
                 ) : null}
             </div>
@@ -156,28 +181,25 @@ function Work({ work, onWorkRemoved, onWorkEdit, user, onUserProfileClick }) {
             <p className="mt-2 text-gray-700 text-sm font-light">{work.text}</p>
             <p className="block text-right text-xs text-gray-500 mt-2">{format(new Date(work.date), ' HH:mm dd/MM/yyyy')}</p>
 
-
             <div
-                className="like flex items-center space-x-1 mt-2"
-                onMouseEnter={toggleLikesList} // Muestra la lista al hacer hover
-                onMouseLeave={toggleLikesList} // Oculta la lista al salir
-                onClick={toggleLikesList} // Alternar visibilidad al hacer clic
+                className="like flex items-center space-x-1 mt-2 relative"
+                onMouseEnter={toggleLikesList}
+                onMouseLeave={toggleLikesList}
+                onClick={toggleLikesList}
             >
                 <GiveLikeWorkButton isLiked={isLiked} onClick={handleToggleLike} />
                 <p className="text-sm text-gray-600 align-text-bottom">{likeCount} likes</p>
                 {showLikesList && (
-                    <div className="absolute bg-white border rounded shadow-lg max-w-[300px] p-2 mt-2">
+                    <div className="absolute left-1/2 transform -translate-x-1/2 top-0 mt-2 bg-white border rounded shadow-lg p-2 max-w-[300px]">
                         {likers.map((likerId, index) => (
-                            <div key={index} className="text-center">{/* Ajusta aquí para usar el nombre y apellido del usuario */}
-                                {/* Suponiendo que tienes un método para obtener el nombre del usuario por ID */}
-                                {user.name + ' ' +
-                                    user.surname} {/* Cambia esto por el nombre del usuario */}
+                            <div key={index} className="text-center text-xs md:text-sm lg:text-base text-gray-600">
+                                {/* // <div key={index} className="text-center text-xs text-gray-600"> */}
+                                {user.name + ' ' + user.surname}
                             </div>
                         ))}
                     </div>
                 )}
             </div>
-
         </article>
     )
 }
