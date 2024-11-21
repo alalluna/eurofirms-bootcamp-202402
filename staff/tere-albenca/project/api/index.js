@@ -5,16 +5,21 @@ import cors from 'cors'
 import jwt from 'jsonwebtoken'
 import { errors } from 'com'
 import dotenv from 'dotenv'
-import { Work, User } from './data/index.js'
+import { google } from 'googleapis'
 import { upload } from './config/multer.js'
 import { uploadFile } from './util/uploadFile.js'
 
-
-dotenv.config()
-
+dotenv.config() // Cargar variables de entorno
 const { JsonWebTokenError, TokenExpiredError } = jwt
 const { ContentError, DuplicityError, MatchError } = errors
-const { PORT, MONGO_URL, JWT_SECRET } = process.env
+const { PORT, MONGO_URL, JWT_SECRET, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REDIRECT_URI } = process.env
+
+// Configuración de Google OAuth
+const oauth2Client = new google.auth.OAuth2(
+    GOOGLE_CLIENT_ID,
+    GOOGLE_CLIENT_SECRET,
+    GOOGLE_REDIRECT_URI
+)
 
 mongoose.connect(MONGO_URL)
     .then(() => {
@@ -26,12 +31,105 @@ mongoose.connect(MONGO_URL)
 
         const allowedOrigins = ['http://localhost:5173', 'https://alalluna.netlify.app']
 
-        server.use(cors());
-        // server.use(cors({
-        //     origin: ['http://localhost:5173', 'https://alalluna.netlify.app'],
-        //     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-        //     allowedHeaders: ['Content-Type', 'Authorization']
-        // }));
+        server.use(cors())
+
+        // Endpoint para iniciar el flujo de autenticación con Google
+
+        server.get('/auth/google', (req, res) => {
+            const scopes = [
+                'https://www.googleapis.com/auth/calendar.events',
+                'https://www.googleapis.com/auth/calendar',
+                'https://www.googleapis.com/auth/userinfo.email',
+                'https://www.googleapis.com/auth/userinfo.profile'
+            ]
+
+            const authUrl = oauth2Client.generateAuthUrl({
+                access_type: 'offline',
+                scope: scopes,
+                prompt: 'consent',
+            })
+
+            res.redirect(authUrl)
+        })
+
+        // Endpoint para manejar el callback de Google
+
+        server.get('/google/redirect', async (req, res) => {
+            const { code } = req.query
+
+            try {
+                const { tokens } = await oauth2Client.getToken(code)
+
+                oauth2Client.setCredentials(tokens)
+
+                // Guarda los tokens en tu base de datos junto con el usuario autenticado
+                // Ejemplo: await logic.saveGoogleTokens(userId, tokens);
+
+                res.status(200).json({ message: 'Google tokens saved successfully', tokens })
+            } catch (error) {
+                res.status(500).json({ error: 'Failed to retrieve tokens from Google', message: error.message })
+            }
+        })
+
+        // Obtener eventos del calendario de Google
+
+        server.get('/calendar/events', async (req, res) => {
+            try {
+                const { authorization } = req.headers
+                const token = authorization.slice(7)
+
+                const { sub: userId } = jwt.verify(token, JWT_SECRET)
+
+                // Recupera los tokens de Google guardados en tu base de datos
+                const googleTokens = await logic.getGoogleTokens(userId)
+
+                oauth2Client.setCredentials(googleTokens)
+
+                const calendar = google.calendar({ version: 'v3', auth: oauth2Client })
+
+                const { data } = await calendar.events.list({
+                    calendarId: 'primary',
+                    timeMin: new Date().toISOString(),
+                    maxResults: 10,
+                    singleEvents: true,
+                    orderBy: 'startTime',
+                });
+
+                res.json(data.items);
+            } catch (error) {
+                res.status(500).json({ error: 'Failed to fetch calendar events', message: error.message })
+            }
+        })
+
+        // Crear un evento en Google Calendar
+
+        server.post('/calendar/events', jsonBodyParser, async (req, res) => {
+            try {
+                const { authorization } = req.headers
+                const token = authorization.slice(7)
+
+                const { sub: userId } = jwt.verify(token, JWT_SECRET)
+
+                // Recupera los tokens de Google guardados en tu base de datos
+                const googleTokens = await logic.getGoogleTokens(userId)
+
+                oauth2Client.setCredentials(googleTokens)
+
+                const calendar = google.calendar({ version: 'v3', auth: oauth2Client })
+
+                const event = req.body
+
+                const { data } = await calendar.events.insert({
+                    calendarId: 'primary',
+                    resource: event,
+                })
+
+                res.status(201).json(data)
+            } catch (error) {
+                res.status(500).json({ error: 'Failed to create calendar event', message: error.message })
+            }
+        })
+
 
 
         //registerStudent
@@ -97,7 +195,7 @@ mongoose.connect(MONGO_URL)
 
                 logic.authenticateUser(email, password)
                     .then(user => {
-                        const token = jwt.sign({ sub: user.id, role: user.role }, JWT_SECRET, { expiresIn: '60m' })
+                        const token = jwt.sign({ sub: user.id, role: user.role }, JWT_SECRET, { expiresIn: '120m' })
 
                         res.status(200).json(token)
                     })
@@ -167,40 +265,35 @@ mongoose.connect(MONGO_URL)
 
                 const { sub: userId } = jwt.verify(token, JWT_SECRET)
                 const { title, text } = req.body;
-                const file = req.files && req.files.image && req.files.image[0];
+                const file = req.files && req.files.image && req.files.image[0]
 
                 if (!file) {
-                    return res.status(400).json({ error: 'No file uploaded' });
+                    return res.status(400).json({ error: 'No file uploaded' })
                 }
 
-                const { downloadURL } = await uploadFile(file);
-                const imageUrl = downloadURL;
+                const { downloadURL } = await uploadFile(file)
+                const imageUrl = downloadURL
 
                 const createdWork = await logic.createWork(userId, title, imageUrl, text)
 
                 res.status(201).json(createdWork)
             } catch (error) {
-                console.error('Error in POST /works:', error.message);
+                console.error('Error in POST /works:', error.message)
 
-                let status = 500;
+                let status = 500
 
                 if (error instanceof MatchError) {
-                    status = 401;
+                    status = 401
                 } else if (error instanceof JsonWebTokenError || error instanceof TokenExpiredError) {
-                    status = 401;
-                    error = new MatchError(error.message);
+                    status = 401
+                    error = new MatchError(error.message)
                 } else if (error instanceof ContentError) {
                     status = 400;
                 }
 
-                res.status(status).json({ error: error.constructor.name, message: error.message });
+                res.status(status).json({ error: error.constructor.name, message: error.message })
             }
         });
-
-        // server.get("/works", (req, res) => {
-        //     return res.json({ message: "Works" })
-
-        // })
 
         //removeWork
 
@@ -828,4 +921,4 @@ mongoose.connect(MONGO_URL)
         })
         server.listen(PORT, () => console.log('API started at port ' + PORT))
     })
-    .catch(error => console.error(error));
+    .catch(error => console.error(error))
