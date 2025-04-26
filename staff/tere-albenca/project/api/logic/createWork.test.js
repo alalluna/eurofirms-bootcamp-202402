@@ -7,7 +7,7 @@ mongoose.connect('mongodb://localhost:27017/project', {
     useCreateIndex: true,
 }).then(() => {
 
-    console.log('MongoDB connected successfully');
+    console.log('MongoDB connected successfully')
 
     try {
         createWork(
@@ -16,16 +16,16 @@ mongoose.connect('mongodb://localhost:27017/project', {
             'https://crehana-blog.imgix.net/media/filer_public/09/fc/09fcbec6-4e4a-4c04-94ed-4c4442a164c3/ejercicios-de-perspectiva_un-punto-fuga-3.jpg?auto=format&q=50', // URL de imagen válido
             'ilustration diving'
         ).then(() => {
-            console.log('Work created successfully');
-            mongoose.disconnect(); // Desconectamos de la base de datos después de completar la prueba
+            console.log('Work created successfully')
+            mongoose.disconnect() // Desconectamos de la base de datos después de completar la prueba
         }).catch(error => {
-            console.error('Error creating work:', error);
-            mongoose.disconnect(); // Desconectamos de la base de datos en caso de error también
+            console.error('Error creating work:', error)
+            mongoose.disconnect() // Desconectamos de la base de datos en caso de error también
         });
     } catch (error) {
-        console.error('Error in try block:', error);
-        mongoose.disconnect(); // Aseguramos la desconexión de la base de datos en caso de error en el try
+        console.error('Error in try block:', error)
+        mongoose.disconnect() // Aseguramos la desconexión de la base de datos en caso de error en el try
     }
 }).catch(error => {
-    console.error('MongoDB connection error:', error);
-});
+    console.error('MongoDB connection error:', error)
+})

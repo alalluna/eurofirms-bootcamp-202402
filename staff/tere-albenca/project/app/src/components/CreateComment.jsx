@@ -27,7 +27,7 @@ function CreateComment({ workId, onCommentCreated }) {
             />
             <button onClick={handleCreateComment} className="px-2 py-1 bg-blue-500 text-white rounded-md">Add Comment</button>
         </div>
-    );
+    )
 }
 
 export default CreateComment

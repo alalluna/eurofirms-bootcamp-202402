@@ -12,7 +12,11 @@ function retrieveUserWorks(userId, targetUserId) {
         .then(user => {
             if (!user) throw new MatchError('userId not found')
 
-            return Work.find({ author: targetUserId }).select('-__v').populate('author', 'name').lean()
+            return Work.find({ author: targetUserId })
+                .select('-__v')
+                .populate('author', 'name')
+                .populate('likes', 'name')
+                .lean()
                 .catch(error => { throw new SystemError(error.message) })
                 .then(works => {
                     // if (works.length === 0) throw new MatchError('Firstly upload work please')
@@ -23,10 +27,18 @@ function retrieveUserWorks(userId, targetUserId) {
 
                             delete work._id
                         }
-                        if (work.author._id) {
+                        // Transform author
+                        if (work.author?._id) {
                             work.author.id = work.author._id.toString()
-
                             delete work.author._id
+                        }
+
+                        // Transform likes
+                        if (work.likes?.length) {
+                            work.likes = work.likes.map(like => ({
+                                id: like._id.toString(),
+                                name: like.name
+                            }))
                         }
                     })
 
@@ -34,4 +46,5 @@ function retrieveUserWorks(userId, targetUserId) {
                 })
         })
 }
+
 export default retrieveUserWorks

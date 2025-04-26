@@ -1,5 +1,5 @@
 import { User, Work } from '../data/index.js'
-import { validate, errors } from 'com'// Asumiendo que tienes un archivo de utilidades para validar
+import { validate, errors } from 'com'
 
 const { SystemError, MatchError, ContentError } = errors
 

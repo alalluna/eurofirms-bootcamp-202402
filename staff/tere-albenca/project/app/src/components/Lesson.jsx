@@ -8,13 +8,13 @@ const { MatchError, ContentError } = errors
 
 // Función para extraer el ID de YouTube desde una URL
 function extractYouTubeID(url) {
-    const regExp = /^.*(youtu.be\/|v\/|\/u\/\w\/|embed\/|watch\?v=|\&v=|\?v=|\&v=)([^#\&\?]*).*/;
-    const match = url.match(regExp);
+    const regExp = /^.*(youtu.be\/|v\/|\/u\/\w\/|embed\/|watch\?v=|\&v=|\?v=|\&v=)([^#\&\?]*).*/
+    const match = url.match(regExp)
 
     if (match && match[2].length === 11) {
-        return match[2];
+        return match[2]
     } else {
-        return null;
+        return null
     }
 }
 
@@ -40,7 +40,7 @@ function Lesson({ lesson, onLessonRemoved, onLessonEdit, user, onUserLessonClick
                             feedback = `${feedback}, please verify credentials`
                         else
                             feedback = 'Sorry, there was an error, please try again later'
-                        alert(feedback);
+                        alert(feedback)
                     })
             }
         } catch (error) {
@@ -79,7 +79,7 @@ function Lesson({ lesson, onLessonRemoved, onLessonEdit, user, onUserLessonClick
                     else
                         feedback = 'Sorry, there was an error, please try again later'
                     alert(feedback)
-                });
+                })
         } catch (error) {
             console.error(error)
             let feedback = error.message

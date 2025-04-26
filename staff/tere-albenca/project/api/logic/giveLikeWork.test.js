@@ -1,10 +1,8 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose'
 import giveLikeWork from './giveLikeWork.js'
-import dotenv from "dotenv"
+import dotenv from 'dotenv'
 
-dotenv.config();
-// const { JsonwebTokenError, TokenExpiredError } = jwt;
-// const { ContentError, DuplicityError, MatchError } = errors
+dotenv.config()
 
 const { PORT, MONGO_URL, JWT_SECRET } = process.env
 mongoose.connect(`DB conected at ${MONGO_URL}`)

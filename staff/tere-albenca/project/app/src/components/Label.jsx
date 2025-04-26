@@ -3,4 +3,5 @@ function Label({ className, htmlFor }) {
         <label htmlFor={htmlFor} className={'' + className} ></label>
     )
 }
+
 export default Label

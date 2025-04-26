@@ -1,6 +1,6 @@
-import { errors, validate } from 'com';
+import { errors, validate } from 'com'
 
-const { SystemError } = errors;
+const { SystemError } = errors
 
 function giveLikeWork(workId) {
     validate.token(sessionStorage.token)

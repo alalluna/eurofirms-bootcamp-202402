@@ -31,4 +31,5 @@ function createComment(workId, text) {
         })
     })
 }
+
 export default createComment

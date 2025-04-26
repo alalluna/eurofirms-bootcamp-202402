@@ -6,7 +6,7 @@ import Footer from '../components/Footer'
 
 const { ContentError, TypeError, RangeError, MatchError } = errors
 
-function Home ({onHomeClick,onLoginClick, onContactClick, onCoursesClick, onShopClick, onPrivacyClick}){
+function Shop ({onHomeClick,onLoginClick, onContactClick, onCoursesClick, onShopClick, onPrivacyClick}){
   const handleHomeClick = (event) => {
     event.preventDefault()
     onHomeClick()
@@ -53,4 +53,4 @@ function Home ({onHomeClick,onLoginClick, onContactClick, onCoursesClick, onShop
   )
 }
 
-export default Home
+export default Shop

@@ -13,24 +13,22 @@ const { MatchError, ContentError } = errors
 function CreateWork({ onCancelClick, onWorkCreated }) {
   const handleCancelClick = () => {
     if (onCancelClick) {
-      onCancelClick();
+      onCancelClick()
     }
-  };
+  }
 
   const handleSubmit = async event => {
-    // const handleSubmit = event => {
     event.preventDefault()
 
     const form = event.target
     const title = form.title.value
-    // const image = form.image.value
     const imageFile = form.image.files[0]
     const text = form.text.value
 
     try {
 
       await logic.createWork(title, imageFile, text); // Pasar imageFile en lugar de image
-      onWorkCreated();
+      onWorkCreated()
 
     } catch (error) {
       console.error(error)
@@ -40,7 +38,7 @@ function CreateWork({ onCancelClick, onWorkCreated }) {
       if (error instanceof TypeError || error instanceof RangeError || error instanceof ContentError)
         feedback = `${feedback},please correct it`
       else if (error instanceof MatchError)
-        feedback = `${feedback}, use valid data`;
+        feedback = `${feedback}, use valid data`
       else
         feedback = 'sorry, there was an error, please try again later'
 
@@ -65,7 +63,7 @@ function CreateWork({ onCancelClick, onWorkCreated }) {
         <Button onClick={handleCancelClick}>cancel</Button>
       </section>
     </>
-  );
+  )
 }
 
 export default CreateWork

@@ -15,18 +15,23 @@ Alalluna  app is a responsive application for studying arts, where teachers can 
 
 ### Use Cases
 
-#### For teacher
+#### For All People
 
 - View all works
 - View my works in profile (list of works of the logged in user)
-- View users works (user's works list)
-- Publish my works
+- Post works
+- Search by words ( only search in tittle) 
+
+#### For teacher
+
 - Edit any work of a user (only title and description)
 - Delete any work of a user
-- Add comment form some work
+
+- Add comment from some work
 - Delete comment from some work
 - Edit comment from some work
-- Register new teacher
+
+- Register new teacher or student
 
 
 - Create lesson (work in progress)
@@ -36,14 +41,10 @@ Alalluna  app is a responsive application for studying arts, where teachers can 
 
 #### For students
 
-- View all works
-- View my works in profile (list of works of the logged in user)
-- View users works (user's works list)
-- Publish my work
 - Edit only my work (only title and description)
 - Delete only my work
-- View comments (from work of every students)
 
+- View comments (from work of every students)
 
 - View list of all lessons and lessons of some teacher (work in progress)
 
@@ -66,6 +67,7 @@ https://www.figma.com/design/TaAkM7JZWBW6s9Qxw5XMWV/project-academy-online?node-
 - JWT
 - Multer
 - Firebase
+- Font Awesome
 
 ## Modules
 
@@ -93,6 +95,7 @@ Work (student)
 - Image (string, required)
 - Description (string)
 - Date (date, required)
+- Likelist (arraylist)
 
 Comment
 - Id (auto)
@@ -112,3 +115,8 @@ Lesson of teachers(work in progress)
 - Prezi link(string)
 - Video (string)
 - Date (date, required)
+
+<!-- - Calendar
+- Search works
+- Finding word/s 
+- Button search -->

@@ -5,10 +5,12 @@ import Input from '../components/Input'
 import Hone from '../components/Hone'
 import { errors } from 'com'
 import { useState } from 'react'
+import Header from '../components/Header'
+import Footer from '../components/Footer'
 
 const { ContentError, MatchError } = errors
 
-function Login({ onUserLoggedIn, onRegisterClick }) {
+function Login({ onUserLoggedIn, onRegisterClick, onHomeClick, onLoginClick, onContactClick, onCoursesClick, onShopClick, onPrivacyClick }) {
 
   const [error, setError] = useState(null)
 
@@ -55,7 +57,30 @@ function Login({ onUserLoggedIn, onRegisterClick }) {
     }
 
   }
-
+  const handleHomeClick = (event) => {
+    event.preventDefault()
+    onHomeClick()
+  }
+  const handleLoginClick = (event) => {
+    event.preventDefault()
+    onLoginClick()
+  }
+  const handleContactClick = (event) => {
+    event.preventDefault()
+    onContactClick()
+  }
+  const handleCoursesClick = (event) => {
+    event.preventDefault()
+    onCoursesClick()
+  }
+  const handleShopClick = (event) => {
+    event.preventDefault()
+    onShopClick()
+  }
+  const handlePrivacyClick = (event) => {
+    event.preventDefault()
+    onPrivacyClick()
+  }
   const handleRegisterClick = (event) => {
     event.preventDefault()
 
@@ -64,7 +89,16 @@ function Login({ onUserLoggedIn, onRegisterClick }) {
 
   return (
     <div className='flex items-center justify-center h-screen w-screen bg-[whitesmoke] overflow-hidden'>
-      <div className='my-4 w-full max-w-md p-8 bg-white rounded-lg shadow-lg'>
+      <div className='my-4 w-full max-w-md p-1 bg-white rounded-lg shadow-lg'>
+  
+        <Header
+          isHome={true}
+          onHomeClick={handleHomeClick}
+          onLoginClick={handleLoginClick}
+          onContactClick={handleContactClick}
+          onCoursesClick={handleCoursesClick}
+          onShopClick={handleShopClick}
+        />
         <main className='w-full max-w-xl flex flex-col justify-center items-center mb-2'>
           <Hone className='text-center mb-4'>LOGIN</Hone>
 
@@ -92,6 +126,7 @@ function Login({ onUserLoggedIn, onRegisterClick }) {
             </div>
           </Form>
         </main>
+        <Footer isHome={true} onPrivacyClick={handlePrivacyClick} />
       </div>
     </div>
   )

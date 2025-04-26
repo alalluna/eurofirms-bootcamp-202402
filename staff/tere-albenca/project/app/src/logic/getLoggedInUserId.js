@@ -1,4 +1,4 @@
-import { utils, validate } from "com"
+import { utils, validate } from 'com'
 
 function getLoggedInUserId() {
 

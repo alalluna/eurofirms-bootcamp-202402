@@ -12,9 +12,9 @@ const { MatchError, ContentError } = errors
 function CreateLesson({ onCancelLessonClick, onLessonCreated }) {
   const handleCancelLessonClick = () => {
     if (onCancelLessonClick) {
-      onCancelLessonClick();
+      onCancelLessonClick()
     }
-  };
+  }
 
   const handleSubmit = event => {
     event.preventDefault()
@@ -80,7 +80,7 @@ function CreateLesson({ onCancelLessonClick, onLessonCreated }) {
         <Button onClick={handleCancelLessonClick}>cancel</Button>
       </section>
     </>
-  );
+  )
 }
 
 export default CreateLesson

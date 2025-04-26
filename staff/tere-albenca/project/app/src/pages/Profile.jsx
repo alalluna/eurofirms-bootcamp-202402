@@ -9,7 +9,7 @@ import Footer from '../components/Footer'
 
 const { ContentError, TypeError, RangeError } = errors
 
-function Profile({ onUserLoggedOut, onHomeClick, onProfileClick, onNewTeacherClick }) {
+function Profile({ onUserLoggedOut, onHomeClick, onProfileClick, onNewTeacherClick, onDashboardClick}) {
     const { targetUserId } = useParams()
     const [view, setView] = useState(null)
     const [refreshStamp, setRefreshStamp] = useState(null)
@@ -53,6 +53,10 @@ function Profile({ onUserLoggedOut, onHomeClick, onProfileClick, onNewTeacherCli
         event.preventDefault()
         onHomeClick()
     }
+    const handleDashboardClick = (event) => {
+        event.preventDefault()
+        onDashboardClick()
+    } 
 
     const handleProfileClick = event => {
         event.preventDefault()
@@ -68,6 +72,7 @@ function Profile({ onUserLoggedOut, onHomeClick, onProfileClick, onNewTeacherCli
                     onCreateClick={handleCreateClick}
                     onProfileClick={handleProfileClick}
                     onNewTeacherClick={onNewTeacherClick}
+                    onDashboardClick={handleDashboardClick}
                     user={user}
                 />
                 <main className='w-full bg-[whitesmoke]'>

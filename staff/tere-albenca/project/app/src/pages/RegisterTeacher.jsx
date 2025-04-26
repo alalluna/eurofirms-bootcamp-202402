@@ -1,15 +1,16 @@
 import logic from '../logic'
-//import components from '../components'
 import Form from '../components/Form.jsx'
 import Button from '../components/Button.jsx'
 import Hone from '../components/Hone.jsx'
 import Input from '../components/Input.jsx'
+import Header from '../components/Header'
+import Footer from '../components/Footer'
 import { errors } from 'com'
 import { useState } from 'react'
 
 const { ContentError, DuplicityError } = errors
 
-function RegisterTeacher({ onTeacherRegistered, onLoginClick }) {
+function RegisterTeacher({ onTeacherRegistered, onHomeClick, onLoginClick, onContactClick, onCoursesClick, onShopClick, onPrivacyClick }) {
   const [error, setError] = useState(null)
 
   const errorHandle = (error) => {
@@ -76,16 +77,43 @@ function RegisterTeacher({ onTeacherRegistered, onLoginClick }) {
       errorHandle(error)
     }
   }
-
+  const handleHomeClick = (event) => {
+    event.preventDefault()
+    onHomeClick()
+  }
+  const handleContactClick = (event) => {
+    event.preventDefault()
+    onContactClick()
+  }
+  const handleCoursesClick = (event) => {
+    event.preventDefault()
+    onCoursesClick()
+  }
+  const handleShopClick = (event) => {
+    event.preventDefault()
+    onShopClick()
+  }
+  const handlePrivacyClick = (event) => {
+    event.preventDefault()
+    onPrivacyClick()
+  }
   const handleLoginClick = (event) => {
     event.preventDefault()
-
     onLoginClick()
   }
 
   return (
     <div className='flex items-center justify-center h-screen w-screen bg-[whitesmoke] overflow-hidden'>
       <div className='my-4 w-full max-w-md p-2 bg-white rounded-lg shadow-lg'>
+      <Header
+          isHome={true}
+          onHomeClick={handleHomeClick}
+          onLoginClick={handleLoginClick}
+          onContactClick={handleContactClick}
+          onCoursesClick={handleCoursesClick}
+          onShopClick={handleShopClick}
+        />
+        
         <main className='w-full max-w-xl flex flex-col justify-center items-center mb-2' >
           <Hone className='text-center'>NEW TEACHER</Hone>
           <Form onSubmit={handleSubmit} className='w-full flex justify-center'>
@@ -110,8 +138,10 @@ function RegisterTeacher({ onTeacherRegistered, onLoginClick }) {
             </div>
           </Form>
         </main>
+        <Footer isHome={true} onPrivacyClick={handlePrivacyClick} />
       </div>
     </div>
   )
 }
+
 export default RegisterTeacher

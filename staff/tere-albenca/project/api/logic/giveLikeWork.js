@@ -5,34 +5,39 @@ const { SystemError, MatchError } = errors
 
 // Api logic methods
 
-function giveLikeWork(userId, workId) {
+async function giveLikeWork(userId, workId) {
     validate.id(userId, 'userId')
     validate.id(workId, 'workId')
 
-    return User.findById(userId)
-        .catch(error => { throw new SystemError(error.message) })
-        .then(user => {
-            if (!user) {
-                throw new MatchError('user not found')
-            }
+    let user, work
 
-            return Work.findById(workId)
-                .catch(error => { throw new SystemError(error.message) })
-        })
-        .then(work => {
-            if (!work) throw new MatchError('work not found')
+    try {
+        user = await User.findById(userId)
+        if (!user) throw new MatchError('user not found')
+    } catch (error) {
+        throw new SystemError(error.message)
+    }
 
-            const index = work.likes.findIndex(likedUserId => likedUserId.toString() === userId)
+    try {
+        work = await Work.findById(workId)
+        if (!work) throw new MatchError('work not found')
+    } catch (error) {
+        throw new SystemError(error.message)
+    }
 
-            if (index < 0)
-                work.likes.push(userId)
-            else
-                work.likes.splice(index, 1)
+    const index = work.likes.findIndex(likedUserId => likedUserId.toString() === userId)
 
-            return work.save()
-                .catch(error => { throw new SystemError(error.message) })
+    if (index < 0) {
+        work.likes.push(userId) // Like
+    } else {
+        work.likes.splice(index, 1) // Unlike
+    }
 
-        })
+    try {
+        await work.save()
+    } catch (error) {
+        throw new SystemError(error.message)
+    }
 }
 
 export default giveLikeWork

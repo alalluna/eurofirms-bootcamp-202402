@@ -11,12 +11,12 @@ function retrieveComment(userId, workId, commentId) {
     return User.findById(userId)
         .catch(error => { throw new SystemError(error.message) })
         .then(user => {
-            if (!user) throw new MatchError("teacher not found")
+            if (!user) throw new MatchError('teacher not found')
 
             return Work.findById(workId)
                 .catch(error => { throw new SystemError(error.message) })
                 .then(work => {
-                    if (!work) throw new MatchError("work not found")
+                    if (!work) throw new MatchError('work not found')
 
                     return Comment.findById(commentId).select('-__v').populate('teacher', 'name').lean()
                         .catch(error => { throw new SystemError(error.message) })
@@ -37,4 +37,5 @@ function retrieveComment(userId, workId, commentId) {
                 })
         })
 }
+
 export default retrieveComment
