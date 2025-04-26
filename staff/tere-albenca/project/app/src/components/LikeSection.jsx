@@ -6,6 +6,7 @@ export default function LikeSection({ work, user, onLikeUpdated }) {
     const [isLiked, setIsLiked] = useState(false)
     const [likers, setLikers] = useState(work.likes || [])
     const [likersDetails, setLikersDetails] = useState([])
+    const [isHovered, setIsHovered] = useState(false)
 
     // Actualiza likers cuando cambie work
     useEffect(() => {
@@ -77,12 +78,31 @@ export default function LikeSection({ work, user, onLikeUpdated }) {
 
     return (
         <div>
-            <GiveLikeWorkButton isLiked={isLiked} onClick={handleToggleLike} />
-            <span>{likers.length} likes</span>
-            <div>
-                {likersDetails.map(liker => (
-                    <div key={liker.id}>{liker.name}</div>
-                ))}
+            <div
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+                style={{ display: 'inline-block', position: 'relative' }}
+            >
+                <GiveLikeWorkButton isLiked={isLiked} onClick={handleToggleLike} />
+                <span>{likers.length} likes</span>
+
+                {isHovered && (
+                    <div style={{
+                        position: 'absolute',
+                        top: '100%',
+                        left: 0,
+                        backgroundColor: 'white',
+                        border: '1px solid #ccc',
+                        padding: '10px',
+                        borderRadius: '8px',
+                        boxShadow: '0px 4px 8px rgba(0,0,0,0.1)',
+                        zIndex: 10
+                    }}>
+                        {likersDetails.map(liker => (
+                            <div key={liker.id}> {liker.name} </div>
+                        ))}
+                    </div>
+                )}
             </div>
         </div>
     )
