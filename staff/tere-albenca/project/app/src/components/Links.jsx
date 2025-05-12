@@ -10,7 +10,7 @@ function Links({ href, imgSrc, alt }) {
       <img 
         src={imgSrc} 
         alt={alt} 
-        className='max-h-[38px] w-auto transition-transform duration-300 ease-in-out hover:scale-110' 
+        className=' w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 transition-transform duration-300 ease-in-out hover:scale-110' 
       />
     </a>
   )

@@ -1,6 +1,34 @@
 import HeaderButton from './HeaderButton'
+import React, { useState } from 'react'
 
 function Header({ onHomeClick, onLoginClick, onDashboardClick, onShopClick, onCreateClick, onCoursesClick, onContactClick, onProfileClick, user, onNewTeacherClick, isHome }) {
+
+    const [menuOpen, setMenuOpen] = useState(false)
+
+    const toggleMenu = () => setMenuOpen(prev => !prev)
+
+    const renderButtons = () => (
+        <>
+            {isHome ? (
+                <>
+                    <HeaderButton onClick={onLoginClick} imgSrc='../images/login.png' alt='login' />
+                    <HeaderButton onClick={onShopClick} imgSrc='../images/shop.png' alt='shop' />
+                    <HeaderButton onClick={onCoursesClick} imgSrc='../images/courses.png' alt='courses' />
+                    <HeaderButton onClick={onContactClick} imgSrc='../images/contact.png' alt='contact' />
+                </>
+            ) : (
+                <>
+                    {user?.role === 'teacher' && (
+                        <HeaderButton onClick={onNewTeacherClick} imgSrc='../images/new-teacher.png' alt='new teacher' />
+                    )}
+                    <HeaderButton onClick={onDashboardClick} imgSrc='../images/dashboard.png' alt='dashboard' />
+                    <HeaderButton onClick={onCreateClick} imgSrc='../images/create.png' alt='create' />
+                    <HeaderButton onClick={onProfileClick} imgSrc='../images/profile.png' alt='profile' />
+                </>
+            )}
+        </>
+    )
+
     return (
         <header className='h-[45px] sm:h-[50px] border-b border-black fixed top-0 left-0 w-full bg-blue-400 box-border z-50'>
             <div className='flex justify-between items-center h-full px-1'>
@@ -10,25 +38,29 @@ function Header({ onHomeClick, onLoginClick, onDashboardClick, onShopClick, onCr
                     </button>
                 </div>
 
-                {/* Botones */}
-                {isHome ? (
-                    <div className='flex flex-row items-center h-full'>
-                        <HeaderButton onClick={onLoginClick} imgSrc='../images/login.png' alt='login' />
-                        <HeaderButton onClick={onShopClick} imgSrc='../images/shop.png' alt='shop' />
-                        <HeaderButton onClick={onCoursesClick} imgSrc='../images/courses.png' alt='courses' />
-                        <HeaderButton onClick={onContactClick} imgSrc='../images/contact.png' alt='contact' />
-                    </div>
-                ) : (
-                    <div className='flex flex-row items-center h-full'>
-                        {user && user.role === 'teacher' && (
-                            <HeaderButton onClick={onNewTeacherClick} imgSrc='../images/new-teacher.png' alt='new teacher' />
-                        )}
-                        <HeaderButton onClick={onDashboardClick} imgSrc='../images/dashboard.png' alt='dashboard' />
-                        <HeaderButton onClick={onCreateClick} imgSrc='../images/create.png' alt='create' />
-                        <HeaderButton onClick={onProfileClick} imgSrc='../images/profile.png' alt='profile' />
-                    </div>
-                )}
+                {/* botones pc */}
+
+                <div className='hidden md:flex flex-row items-center h-full'>
+                    {renderButtons()}
+                </div>
+
+                {/* Movil menu boton hamburguesa */}
+
+                <div className='md:hidden'>
+                    <button onClick={toggleMenu} className="w-8 h-8 flex items-center justify-center">
+                        <img src="../images/menu.png" alt="menu" className="h-[100%]" />
+                    </button>
+                </div>
             </div>
+
+            {/* menu desplegable moviles */}
+
+            {menuOpen && (
+               <div className='absolute top-full right-1 mt-1 bg-gray-300 border border-black rounded px-1 py-1 flex flex-col space-y-1 z-50'>
+                    {renderButtons()}
+                </div>
+            )}
+
         </header>
     )
 }
