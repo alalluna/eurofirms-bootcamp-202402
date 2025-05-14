@@ -2,11 +2,11 @@ import logic from '../logic'
 import Form from '../components/Form'
 import Button from '../components/Button'
 import Input from '../components/Input'
-import Hone from '../components/Hone'
 import { errors } from 'com'
 import { useState } from 'react'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
+
 
 const { ContentError, MatchError } = errors
 
@@ -38,7 +38,6 @@ function Login({ onUserLoggedIn, onRegisterClick, onHomeClick, onLoginClick, onC
     event.preventDefault()
 
     const form = event.target
-
     const email = form.email.value
     const password = form.password.value
 
@@ -81,54 +80,88 @@ function Login({ onUserLoggedIn, onRegisterClick, onHomeClick, onLoginClick, onC
     event.preventDefault()
     onPrivacyClick()
   }
-  const handleRegisterClick = (event) => {
-    event.preventDefault()
-
-    onRegisterClick()
-  }
 
   return (
-    <div className='flex items-center justify-center h-screen w-screen bg-[whitesmoke] overflow-hidden'>
-      <div className='my-4 w-full max-w-md p-1 bg-white rounded-lg shadow-lg'>
-  
-        <Header
-          isHome={true}
-          onHomeClick={handleHomeClick}
-          onLoginClick={handleLoginClick}
-          onContactClick={handleContactClick}
-          onCoursesClick={handleCoursesClick}
-          onShopClick={handleShopClick}
-        />
-        <main className='w-full max-w-xl flex flex-col justify-center items-center mb-2'>
-          <Hone className='text-center mb-4'>LOGIN</Hone>
+    <div className="h-screen w-screen flex flex-col overflow-hidden bg-[whitesmoke]">
+      <Header
+        isHome={true}
+        onHomeClick={onHomeClick}
+        onLoginClick={onLoginClick}
+        onContactClick={onContactClick}
+        onCoursesClick={onCoursesClick}
+        onShopClick={onShopClick}
+      />
 
-          <img
-            src='../images/cabecera.jpg'
-            alt='logo'
-            className='h-40'
-          />
+      {/* MAIN AREA */}
+      <main className="flex-1 flex items-center justify-center py-15 px-4">
+        <div className="flex flex-col sm:flex-row w-full max-w-4xl bg-white rounded-lg shadow-lg overflow-hidden">
+          {/* Image */}
+          <div className="flex justify-center items-center w-full sm:w-1/2 p-4">
+            <img
+              src="../images/hero-image.png"
+              alt="logo"
+              className="max-h-[170px] sm:max-h-full max-w-full object-contain"
+            />
+          </div>
 
-          <Form onSubmit={handleSubmit} className='w-full flex justify-center'>
-            <label htmlFor='email'>Email</label>
-            <Input type='text' id='email' placeholder=' ' />
-            {error?.isEmailError && <span className='text-[#C13E65]'>{error.message}</span>}
+          {/* Form */}
+          <div className="w-full sm:w-1/2 p-4 flex flex-col justify-center">
+            <Form onSubmit={handleSubmit} className="w-full">
+              <label htmlFor='email' className="text-sm">Email</label>
+              <Input type='text' id='email' placeholder=' ' />
+              {error?.isEmailError && <span className='text-[#C13E65] text-xs'>{error.message}</span>}
 
-            <label htmlFor='password'>Password</label>
-            <Input type='password' id='password' placeholder='' />
-            {error?.isPasswordError && <span className='text-[#C13E65]'>{error.message}</span>}
+              <label htmlFor='password' className="text-sm">Password</label>
+              <Input type='password' id='password' placeholder='' />
+              {error?.isPasswordError && <span className='text-[#C13E65] text-xs'>{error.message}</span>}
 
-            <Button type="submit">LOGIN</Button>
-            {error?.anotherError && <span className='text-[#C13E65]'>{error.message}</span>}
+              <Button type="submit" className='mt-4'>LOGIN</Button>
+              {error?.anotherError && <span className='text-[#C13E65] text-xs'>{error.message}</span>}
+            </Form>
+          </div>
+        </div>
+      </main>
 
-            <div className='flex justify-center bg-[lightgray] hover:bg-[#c3c3c2] rounded-xl p-1 my-1'>
-              <a onClick={handleRegisterClick} className='no-underline text-cyan-900 font-semibold'>Register</a>
-              <br />
-            </div>
-          </Form>
-        </main>
-        <Footer isHome={true} onPrivacyClick={handlePrivacyClick} />
-      </div>
+
+      <Footer isHome={true} onPrivacyClick={onPrivacyClick} />
     </div>
   )
+  // return (
+  //   <div className='flex items-center justify-center h-screen w-screen bg-[whitesmoke] overflow-hidden'>
+  //     <div className='m-2 max-h-screen w-full bg-white rounded-lg shadow-lg '>
+
+  //       <Header
+  //         isHome={true}
+  //         onHomeClick={handleHomeClick}
+  //         onLoginClick={handleLoginClick}
+  //         onContactClick={handleContactClick}
+  //         onCoursesClick={handleCoursesClick}
+  //         onShopClick={handleShopClick}
+  //       />
+  //       <main className='flex-w-full flex flex-col justify-center items-center py-6'>
+  //         <img
+  //           src='../images/hero-image.png'
+  //           alt='logo'
+  //           className='h-40 sm:h-42 md:h-44 lg:h-47 xl:h-50'
+  //         />
+
+  //         <Form onSubmit={handleSubmit} className='w-full flex justify-center'>
+  //           <label htmlFor='email'>Email</label>
+  //           <Input type='text' id='email' placeholder=' ' />
+  //           {error?.isEmailError && <span className='text-[#C13E65]'>{error.message}</span>}
+
+  //           <label htmlFor='password'>Password</label>
+  //           <Input type='password' id='password' placeholder='' />
+  //           {error?.isPasswordError && <span className='text-[#C13E65]'>{error.message}</span>}
+
+  //           <Button type="submit" className='mt-2 md:mt-3 lg:mt-4 '>LOGIN</Button>
+  //           {error?.anotherError && <span className='text-[#C13E65]'>{error.message}</span>}
+
+  //         </Form>
+  //       </main>
+  //       <Footer isHome={true} onPrivacyClick={handlePrivacyClick} />
+  //     </div>
+  //   </div>
+  // )
 }
 export default Login

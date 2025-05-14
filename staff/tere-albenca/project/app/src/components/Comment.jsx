@@ -15,7 +15,7 @@ function Comment({ comment, user, onEdit, onDelete }) {
     }
 
     return (
-        <div className="comment p-2 flex justify-between items-center bg-gray-100 rounded-md mb-2">
+        <div className="comment p-2 flex justify-between items-center bg-[whitesmoke] rounded-md mb-2">
             {isEditing ? (
                 <input
                     type="text"

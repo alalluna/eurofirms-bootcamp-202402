@@ -114,7 +114,6 @@ function App() {
         ) : (
           <Login
             onUserLoggedIn={handleUserLoggedIn}
-            onRegisterClick={handleRegisterClick}
             onHomeClick={handleHomeClick}
             onLoginClick={handleLoginClick}
             onContactClick={handleContactClick}

@@ -3,7 +3,6 @@ import Header from '../components/Header'
 import Footer from '../components/Footer'
 import PageTurner from '../components/PageTurner'
 
-const { ContentError, TypeError, RangeError, MatchError } = errors
 
 function Home ({onHomeClick,onLoginClick, onContactClick, onCoursesClick, onShopClick, onPrivacyClick}){
   const handleHomeClick = (event) => {
@@ -31,7 +30,7 @@ function Home ({onHomeClick,onLoginClick, onContactClick, onCoursesClick, onShop
     onPrivacyClick()
   }
   return(
-        <div className='flex flex-col relative w-full max-h-[calc(100vh-50px)]  bg-gray-100'>
+        <div className='flex flex-col max-h-screen bg-gray-100 pt-3'>
       <div className='w-full'>
         <Header
           isHome={true} 
@@ -41,7 +40,7 @@ function Home ({onHomeClick,onLoginClick, onContactClick, onCoursesClick, onShop
           onCoursesClick={handleCoursesClick}
           onShopClick={handleShopClick}
         />
-        <main className='w-[100%] bg-[whitesmoke] mt-6 py-1'>
+        <main className='w-[100%] bg-[whitesmoke]'>
           <div className='flex justify-center'>   
           <PageTurner />
             </div>
