@@ -4,7 +4,7 @@ import FooterButton from './FooterButton'
 
 function Footer({ onLogout, isHome, onPrivacyClick }) {
     return (
-        <footer className='h-[45px] sm:h-[50px] w-full bg-blue-400 p-2 px-1 fixed bottom-0 flex justify-between items-center left-0'>
+        <footer className='h-[42px] sm:h-[46px] lg:h-[50px] w-full bg-cyan-600 p-2 px-1 fixed bottom-0 flex justify-between items-center left-0'>
             <div className='flex space-x-2 px-2 items-center h-full'>
                 <Links href='https://portfolio-alallunas-projects.vercel.app/' imgSrc='../images/portfolio.png' alt='portfolio alalluna' />
                 <Links href='https://github.com/alalluna' imgSrc='../images/github.png' alt='alalluna on github' />

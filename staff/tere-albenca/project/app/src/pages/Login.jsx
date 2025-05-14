@@ -121,7 +121,7 @@ function Login({ onUserLoggedIn, onRegisterClick, onHomeClick, onLoginClick, onC
             {error?.anotherError && <span className='text-[#C13E65]'>{error.message}</span>}
 
             <div className='flex justify-center bg-[lightgray] hover:bg-[#c3c3c2] rounded-xl p-1 my-1'>
-              <a onClick={handleRegisterClick} className='no-underline text-blue-900 font-semibold'>Register</a>
+              <a onClick={handleRegisterClick} className='no-underline text-cyan-900 font-semibold'>Register</a>
               <br />
             </div>
           </Form>

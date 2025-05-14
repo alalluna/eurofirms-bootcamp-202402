@@ -106,13 +106,13 @@ function Dashboard({ onUserLoggedOut, onHomeClick, onProfileClick, onUserProfile
                   />
                   <button
                     type="submit"
-                    className="bg-blue-400 text-white rounded-md px-4 py-2 ml-2 hover:bg-blue-500"
+                    className="bg-cyan-400 text-white rounded-md px-4 py-2 ml-2 hover:bg-cyan-500"
                   >Search
                   </button>
                   <button
                     type="button"
                     onClick={handleCancelSearch}
-                    className="bg-blue-400 text-white rounded-md px-4 py-2 ml-2 hover:bg-blue-500"
+                    className="bg-cyan-400 text-white rounded-md px-4 py-2 ml-2 hover:bg-cyan-500"
                   >X
                   </button>
                 </form>

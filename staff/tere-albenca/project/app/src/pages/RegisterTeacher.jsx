@@ -134,7 +134,7 @@ function RegisterTeacher({ onTeacherRegistered, onHomeClick, onLoginClick, onCon
             {error?.anotherError && <span className='text-[#C13E65]'>{error.message}</span>}
 
             <div className='flex justify-center bg-[lightgray] hover:bg-[#c3c3c2] rounded-xl p-1 my-1'>
-              <a id='login' onClick={handleLoginClick} className='no-underline text-blue-900 font-semibold'>LOGIN</a>
+              <a id='login' onClick={handleLoginClick} className='no-underline text-cyan-900 font-semibold'>LOGIN</a>
             </div>
           </Form>
         </main>

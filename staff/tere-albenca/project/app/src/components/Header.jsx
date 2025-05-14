@@ -30,7 +30,7 @@ function Header({ onHomeClick, onLoginClick, onDashboardClick, onShopClick, onCr
     )
 
     return (
-        <header className='h-[45px] sm:h-[50px] border-b border-black fixed top-0 left-0 w-full bg-blue-400 box-border z-50'>
+        <header className='h-[45px] sm:h-[50px] border-b border-black fixed top-0 left-0 w-full bg-cyan-600 box-border z-50'>
             <div className='flex justify-between items-center h-full px-1'>
                 <div className='flex items-center h-full'>
                     <button onClick={onHomeClick} className='bg-transparent border-none p-0 cursor-pointer h-full'>

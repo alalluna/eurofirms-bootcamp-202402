@@ -1,8 +1,7 @@
-import logic from '../logic'
-import React, { useState, useEffect } from 'react'
 import { errors } from 'com'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
+import PageTurner from '../components/PageTurner'
 
 const { ContentError, TypeError, RangeError, MatchError } = errors
 
@@ -32,8 +31,8 @@ function Home ({onHomeClick,onLoginClick, onContactClick, onCoursesClick, onShop
     onPrivacyClick()
   }
   return(
-        <div className='flex justify-center m-0 p-0 bg-gray-100'>
-      <div className='w-full sm:w-1/2 md:w-1/3 px-4'>
+        <div className='flex flex-col relative w-full max-h-[calc(100vh-50px)]  bg-gray-100'>
+      <div className='w-full'>
         <Header
           isHome={true} 
           onHomeClick={handleHomeClick}
@@ -42,8 +41,11 @@ function Home ({onHomeClick,onLoginClick, onContactClick, onCoursesClick, onShop
           onCoursesClick={handleCoursesClick}
           onShopClick={handleShopClick}
         />
-        <main className='w-[100%] bg-[whitesmoke]'>
-         
+        <main className='w-[100%] bg-[whitesmoke] mt-6 py-1'>
+          <div className='flex justify-center'>   
+          <PageTurner />
+            </div>
+      
 
 
         </main>
@@ -54,3 +56,5 @@ function Home ({onHomeClick,onLoginClick, onContactClick, onCoursesClick, onShop
 }
 
 export default Home
+
+

@@ -4,7 +4,7 @@ function Htwo({ children, className = '', type, onClick }) {
     <h2
       type={type}
       onClick={onClick}
-      className={'text-base text-blue-600 font-bold mb-[12px] pl-2' + className}
+      className={'text-base text-cyan-600 font-bold mb-[12px] pl-2' + className}
     >
       {children}
     </h2>

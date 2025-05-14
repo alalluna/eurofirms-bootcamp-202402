@@ -24,7 +24,7 @@ function SearchWork({ onSearch }) {
       />
       <button
         type="submit"
-        className="bg-blue-500 text-white rounded-md px-4 py-2"
+        className="bg-cyan-500 text-white rounded-md px-4 py-2"
       >
         Search
       </button>

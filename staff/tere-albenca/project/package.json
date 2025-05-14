@@ -5,10 +5,15 @@
     "axios": "^1.7.7",
     "caniuse-lite": "^1.0.30001717",
     "date-fns": "^3.6.0",
+    "framer-motion": "^12.11.0",
     "googleapis": "^144.0.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-type-animation": "^3.2.0",
     "react-youtube": "^10.1.0",
     "sharp": "^0.33.5"
+  },
+  "devDependencies": {
+    "prettier": "^3.5.3"
   }
 }

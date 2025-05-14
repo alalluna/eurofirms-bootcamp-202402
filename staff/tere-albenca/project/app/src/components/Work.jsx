@@ -71,13 +71,13 @@ function Work({ work, onWorkRemoved, onWorkEdit, user, onUserProfileClick }) {
     return (
         <article className="w-full bg-white rounded-lg shadow-md p-4 mb-4">
             <h1
-                className="font-bold text-lg text-blue-400 cursor-pointer hover:text-blue-700"
+                className="font-bold text-lg text-cyan-400 cursor-pointer hover:text-cyan-700"
                 onClick={handleProfileUserClick}
             >
                 {localWork.author.name}
             </h1>
             <div className="w-[90%] flex flex-row justify-between items-center mt-2">
-                <Htwo className="text-blue-900">{localWork.title}</Htwo>
+                <Htwo className="text-cyan-900">{localWork.title}</Htwo>
                 {(user?.role === 'teacher' || user?.id === localWork.author.id) && (
                     <div className="flex space-x-2">
                         <button

@@ -4,7 +4,7 @@ import "@fortawesome/fontawesome-free/css/all.min.css"
 function GiveLikeWorkButton({ isLiked, onClick }) {
     return isLiked ?
     (
-        <IconButton onClick={onClick} color="blue">
+        <IconButton onClick={onClick} color="cyan">
             <i className="fas fa-heart" alt="Me gusta" />
         </IconButton>
     ) : (
