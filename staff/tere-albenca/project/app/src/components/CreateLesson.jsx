@@ -67,12 +67,12 @@ function CreateLesson({ onCancelLessonClick, onLessonCreated }) {
       <section className='mb-12 fixed bottom-0 left-0 bg-white w-full pb-2 border-t-2 border-black flex flex-col box-border px-2'>
         <Htwo className='font-bold text-xl py-2'>CREATE LESSON</Htwo>
         <Form onSubmit={handleSubmit}>
-          <Input type="text" placeholder="Title" id="title" required />
-          <Input type="text" placeholder="Image URL (optional)" id="image" />
-          <Input type="text" placeholder="Description" id="description" required />
-          <Input type="text" placeholder="Prezi link(optional)" id="link" />
-          <Input type="text" placeholder="Video URL" id="video (optional)" />
-          <Button type="submit">Create</Button>
+          <Input type='text' placeholder='Title' id='title' required />
+          <Input type='text' placeholder='Image URL (optional)' id='image' />
+          <Input type='text' placeholder='Description' id='description' required />
+          <Input type='text' placeholder='Prezi link(optional)' id='link' />
+          <Input type='text' placeholder='Video URL' id='video (optional)' />
+          <Button type='submit'>Create</Button>
 
           <Button type='submit'>create</Button>
         </Form>

@@ -69,25 +69,25 @@ function Work({ work, onWorkRemoved, onWorkEdit, user, onUserProfileClick }) {
     }
 
     return (
-        <article className="w-full bg-white rounded-lg shadow-md p-4 mb-4">
+        <article className='w-full bg-white rounded-lg shadow-md p-4 mb-4'>
             <h1
-                className="font-bold text-lg text-cyan-400 cursor-pointer hover:text-cyan-700"
+                className='font-bold text-lg text-cyan-400 cursor-pointer hover:text-cyan-700'
                 onClick={handleProfileUserClick}
             >
                 {localWork.author.name}
             </h1>
-            <div className="w-[90%] flex flex-row justify-between items-center mt-2">
-                <Htwo className="text-cyan-900">{localWork.title}</Htwo>
+            <div className='w-[90%] flex flex-row justify-between items-center mt-2'>
+                <Htwo className='text-cyan-900'>{localWork.title}</Htwo>
                 {(user?.role === 'teacher' || user?.id === localWork.author.id) && (
-                    <div className="flex space-x-2">
+                    <div className='flex space-x-2'>
                         <button
-                            className="px-1.5 py-0.5 bg-gray-200 rounded-md text-sm shadow-md hover:bg-gray-300 hover:shadow-lg active:bg-gray-400 active:shadow-xl transition-all duration-200"
+                            className='px-1.5 py-0.5 bg-gray-200 rounded-md text-sm shadow-md hover:bg-gray-300 hover:shadow-lg active:bg-gray-400 active:shadow-xl transition-all duration-200'
                             onClick={handleShowForm}
                         >
                             ✏️
                         </button>
                         <button
-                            className="px-1.5 py-0.5 bg-gray-200 rounded-md text-white text-l font-bold shadow-md hover:bg-gray-300 hover:shadow-lg active:bg-gray-400 active:shadow-xl transition-all duration-200"
+                            className='px-1.5 py-0.5 bg-gray-200 rounded-md text-white text-l font-bold shadow-md hover:bg-gray-300 hover:shadow-lg active:bg-gray-400 active:shadow-xl transition-all duration-200'
                             onClick={handleRemoveWork}
                         >
                             ❌
@@ -97,32 +97,32 @@ function Work({ work, onWorkRemoved, onWorkEdit, user, onUserProfileClick }) {
             </div>
 
             {editWork && (
-                <div className="mt-2">
-                    <form onSubmit={handleUpdateWork} className="flex flex-col space-y-2">
+                <div className='mt-2'>
+                    <form onSubmit={handleUpdateWork} className='flex flex-col space-y-2'>
                         <input
-                            id="title"
-                            type="text"
-                            placeholder="Edit title"
+                            id='title'
+                            type='text'
+                            placeholder='Edit title'
                             defaultValue={localWork.title}
-                            className="px-2 py-1 border rounded-md"
+                            className='px-2 py-1 border rounded-md'
                         />
                         <input
-                            id="text"
-                            type="text"
-                            placeholder="Edit text"
+                            id='text'
+                            type='text'
+                            placeholder='Edit text'
                             defaultValue={localWork.text}
-                            className="px-2 py-1 border rounded-md"
+                            className='px-2 py-1 border rounded-md'
                         />
-                        <div className="flex space-x-1">
+                        <div className='flex space-x-1'>
                             <button
-                                type="submit"
-                                className="px-2 py-0.5 bg-gray-200 rounded-md text-white text-sm shadow-md hover:bg-gray-300 hover:shadow-lg active:bg-gray-400 active:shadow-xl transition-all duration-200"
+                                type='submit'
+                                className='px-2 py-0.5 bg-gray-200 rounded-md text-white text-sm shadow-md hover:bg-gray-300 hover:shadow-lg active:bg-gray-400 active:shadow-xl transition-all duration-200'
                             >
                                 ok
                             </button>
                             <button
-                                type="button"
-                                className="px-1.5 py-0.5 bg-gray-200 rounded-md text-l font-bold shadow-md hover:bg-gray-300 hover:shadow-lg active:bg-gray-400 active:shadow-xl transition-all duration-200"
+                                type='button'
+                                className='px-1.5 py-0.5 bg-gray-200 rounded-md text-l font-bold shadow-md hover:bg-gray-300 hover:shadow-lg active:bg-gray-400 active:shadow-xl transition-all duration-200'
                                 onClick={handleCancelClick}
                             >
                                 ✖️
@@ -132,9 +132,9 @@ function Work({ work, onWorkRemoved, onWorkEdit, user, onUserProfileClick }) {
                 </div>
             )}
 
-            <img src={localWork.image} className="w-[90%] rounded-lg mt-4" alt={localWork.title} />
-            <p className="mt-2 text-gray-700 text-sm font-light">{localWork.text}</p>
-            <p className="block text-right text-xs text-gray-500 mt-2">
+            <img src={localWork.image} className='w-[90%] rounded-lg mt-4' alt={localWork.title} />
+            <p className='mt-2 text-gray-700 text-sm font-light'>{localWork.text}</p>
+            <p className='block text-right text-xs text-gray-500 mt-2'>
                 {format(new Date(localWork.date), ' HH:mm dd/MM/yyyy')}
             </p>
 

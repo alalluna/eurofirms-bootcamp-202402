@@ -34,7 +34,7 @@ function Lessons({ user, refreshStamp, onUserLessonClick }) {
     const handleLessonEdit = () => loadLessons()
 
     return (
-        <section className="flex flex-col justify-center gap-6 px-2 py-4">
+        <section className='flex flex-col justify-center gap-6 px-2 py-4'>
             {lessons.map(lesson => (
                 <Lesson
                     key={lesson.id}

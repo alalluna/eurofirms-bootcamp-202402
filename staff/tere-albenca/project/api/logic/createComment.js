@@ -32,7 +32,7 @@ function createComment(userId, workId, text) {
                     }
 
                     return Comment.create(comment)
-                        .catch(error => { throw new SystemError(error.message) });
+                        .catch(error => { throw new SystemError(error.message) })
 
                 })
                 .then(comment => { })

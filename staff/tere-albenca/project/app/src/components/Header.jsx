@@ -1,7 +1,7 @@
 import HeaderButton from './HeaderButton'
 import React, { useState } from 'react'
 
-function Header({ onHomeClick, onLoginClick, onDashboardClick, onShopClick, onCreateClick, onCoursesClick, onContactClick, onProfileClick, user, onNewTeacherClick, isHome }) {
+function Header({ onHomeClick, onLoginClick, onDashboardClick, onShopClick, onCreateClick, onCoursesClick, onContactClick, onProfileClick, user, onNewUserClick, isHome }) {
 
     const [menuOpen, setMenuOpen] = useState(false)
 
@@ -19,7 +19,7 @@ function Header({ onHomeClick, onLoginClick, onDashboardClick, onShopClick, onCr
             ) : (
                 <>
                     {user?.role === 'teacher' && (
-                        <HeaderButton onClick={onNewTeacherClick} imgSrc='../images/new-teacher.png' alt='new teacher' />
+                        <HeaderButton onClick={onNewUserClick} imgSrc='../images/new-teacher.png' alt='new user' />
                     )}
                     <HeaderButton onClick={onDashboardClick} imgSrc='../images/dashboard.png' alt='dashboard' />
                     <HeaderButton onClick={onCreateClick} imgSrc='../images/create.png' alt='create' />
@@ -47,8 +47,8 @@ function Header({ onHomeClick, onLoginClick, onDashboardClick, onShopClick, onCr
                 {/* Movil menu boton hamburguesa */}
 
                 <div className='md:hidden'>
-                    <button onClick={toggleMenu} className="w-8 h-8 flex items-center justify-center">
-                        <img src="../images/menu.png" alt="menu" className="h-[100%]" />
+                    <button onClick={toggleMenu} className='w-8 h-8 flex items-center justify-center'>
+                        <img src='../images/menu.png' alt='menu' className='h-[100%]' />
                     </button>
                 </div>
             </div>

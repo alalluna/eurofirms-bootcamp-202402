@@ -3,6 +3,7 @@ import { errors, validate } from 'com'
 const { SystemError } = errors
 
 function registerTeacher(name, surname, email, password) {
+    validate.token(sessionStorage.token)
     validate.name(name)
     validate.surname(surname)
     validate.email(email)
@@ -10,8 +11,16 @@ function registerTeacher(name, surname, email, password) {
 
     return fetch(`${import.meta.env.VITE_API_URL}/users/teachers`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, surname, email, password })
+        headers: {
+            'Authorization': `Bearer ${sessionStorage.token}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ 
+            name: name.trim(), 
+            surname: surname.trim(),
+            email: email.trim(),
+            password: password.trim()
+        })
     })
         .catch(error => { throw new SystemError(error.message) })
         .then(res => {

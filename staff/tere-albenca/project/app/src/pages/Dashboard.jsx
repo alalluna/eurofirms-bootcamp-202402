@@ -8,7 +8,7 @@ import Footer from '../components/Footer'
 
 const { ContentError, TypeError, RangeError, MatchError } = errors
 
-function Dashboard({ onUserLoggedOut, onHomeClick, onProfileClick, onUserProfileClick, onNewTeacherClick ,onDashboardClick}) {
+function Dashboard({ onUserLoggedOut, onHomeClick, onProfileClick, onUserProfileClick, onNewUserClick ,onDashboardClick}) {
     const [view, setView] = useState(null)
     const [refreshStamp, setRefreshStamp] = useState(null)
     const [user, setUser] = useState(null)
@@ -78,6 +78,11 @@ function Dashboard({ onUserLoggedOut, onHomeClick, onProfileClick, onUserProfile
       const query = event.target.query.value
       setSearchQuery(query)
     }
+
+      const handleNewUser = (event) => {
+        event.preventDefault()
+        onNewUserClick()
+    }
   
     const handleCancelSearch = () => {
       setSearchQuery('')
@@ -92,27 +97,27 @@ function Dashboard({ onUserLoggedOut, onHomeClick, onProfileClick, onUserProfile
               onCreateClick={handleCreateClick}
               onProfileClick={handleProfileClick}
               onDashboardClick={handleDashboardClick}
-              onNewTeacherClick={onNewTeacherClick}
+              onNewUserClick={handleNewUser}
               user={user}
             />
             <main className='w-[100%] bg-[whitesmoke]'>
               <div className='w-[100%] flex justify-center items-center'>
                 <form className='mt-16' onSubmit={handleSearchWorks}>
                   <input
-                    name="query"
-                    type="text"
-                    className="border border-gray-500 rounded-md px-4 py-2 mb-4"
-                    placeholder="Search works..."
+                    name='query'
+                    type='text'
+                    className='border border-gray-500 rounded-md px-4 py-2 mb-4'
+                    placeholder='Search works...'
                   />
                   <button
-                    type="submit"
-                    className="bg-cyan-400 text-white rounded-md px-4 py-2 ml-2 hover:bg-cyan-500"
+                    type='submit'
+                    className='bg-cyan-400 text-white rounded-md px-4 py-2 ml-2 hover:bg-cyan-500'
                   >Search
                   </button>
                   <button
-                    type="button"
+                    type='button'
                     onClick={handleCancelSearch}
-                    className="bg-cyan-400 text-white rounded-md px-4 py-2 ml-2 hover:bg-cyan-500"
+                    className='bg-cyan-400 text-white rounded-md px-4 py-2 ml-2 hover:bg-cyan-500'
                   >X
                   </button>
                 </form>

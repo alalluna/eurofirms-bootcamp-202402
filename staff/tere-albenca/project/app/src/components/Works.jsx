@@ -45,7 +45,7 @@ function Works({ user, refreshStamp, searchQuery, onUserProfileClick }) {
     const handleWorkEdit = () => loadWorks()
 
     return (
-        <section className="flex flex-col justify-center gap-6 px-2 py-4">
+        <section className='flex flex-col justify-center gap-6 px-2 py-4'>
             {works.map(work => (
                 <Work
                     key={work.id}

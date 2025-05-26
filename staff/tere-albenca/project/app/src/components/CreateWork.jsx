@@ -27,7 +27,7 @@ function CreateWork({ onCancelClick, onWorkCreated }) {
 
     try {
 
-      await logic.createWork(title, imageFile, text); // Pasar imageFile en lugar de image
+      await logic.createWork(title, imageFile, text) // Pasar imageFile en lugar de image
       onWorkCreated()
 
     } catch (error) {

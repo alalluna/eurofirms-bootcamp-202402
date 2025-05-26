@@ -31,7 +31,23 @@ mongoose.connect(MONGO_URL)
 
         const allowedOrigins = ['http://localhost:5173', 'https://alalluna.netlify.app']
 
-        server.use(cors())
+        // server.use(cors()) //en lugar de esto es necesario permitir acceso a los header 
+        server.use(cors({
+            origin: function (origin, callback) {
+                if (!origin || allowedOrigins.includes(origin)) {
+                    callback(null, true)
+                } else {
+                    callback(new Error('Not allowed by CORS'))
+                }
+            },
+            credentials: true // Si usas cookies o autorización por header
+        }))
+
+        server.use((req, res, next) => {
+            res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization')
+            res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS')
+            next()
+        })
 
         // Endpoint para iniciar el flujo de autenticación con Google
 
@@ -93,9 +109,9 @@ mongoose.connect(MONGO_URL)
                     maxResults: 10,
                     singleEvents: true,
                     orderBy: 'startTime',
-                });
+                })
 
-                res.json(data.items);
+                res.json(data.items)
             } catch (error) {
                 res.status(500).json({ error: 'Failed to fetch calendar events', message: error.message })
             }
@@ -131,29 +147,40 @@ mongoose.connect(MONGO_URL)
         })
 
 
-
         //registerStudent
 
         server.post('/users/students', jsonBodyParser, (req, res) => {
 
             try {
+                const { authorization } = req.headers
+                const token = authorization?.slice(7)
+
+                const { sub: userId } = jwt.verify(token, JWT_SECRET)
                 const { name, surname, email, password } = req.body
 
-                logic.registerStudent(name, surname, email, password)
+                logic.registerStudent(userId, name, surname, email, password)
                     .then(() => res.status(201).send())
                     .catch(error => {
                         let status = 500
 
                         if (error instanceof DuplicityError)
                             status = 409
+                        else if (error instanceof MatchError)
+                            status = 403
 
                         res.status(status).json({ error: error.constructor.name, message: error.message })
                     })
+
             } catch (error) {
                 let status = 500
 
                 if (error instanceof TypeError || error instanceof RangeError || error instanceof ContentError)
                     status = 400
+
+                else if (error instanceof JsonWebTokenError || error instanceof TokenExpiredError) {
+                    status = 401
+                    error = new MatchError(error.message)
+                }
 
                 res.status(status).json({ error: error.constructor.name, message: error.message })
             }
@@ -164,24 +191,35 @@ mongoose.connect(MONGO_URL)
         server.post('/users/teachers', jsonBodyParser, (req, res) => {
 
             try {
+                const { authorization } = req.headers
+                const token = authorization?.slice(7)
 
+                const { sub: userId } = jwt.verify(token, JWT_SECRET)
                 const { name, surname, email, password } = req.body
 
-                logic.registerTeacher(name, surname, email, password)
+                logic.registerTeacher(userId, name, surname, email, password)
                     .then(() => res.status(201).send())
                     .catch(error => {
                         let status = 500
 
                         if (error instanceof DuplicityError)
                             status = 409
+                        else if (error instanceof MatchError)
+                            status = 403
 
                         res.status(status).json({ error: error.constructor.name, message: error.message })
                     })
+
             } catch (error) {
                 let status = 500
 
                 if (error instanceof TypeError || error instanceof RangeError || error instanceof ContentError)
                     status = 400
+
+                else if (error instanceof JsonWebTokenError || error instanceof TokenExpiredError) {
+                    status = 401
+                    error = new MatchError(error.message)
+                }
 
                 res.status(status).json({ error: error.constructor.name, message: error.message })
             }
@@ -293,7 +331,7 @@ mongoose.connect(MONGO_URL)
 
                 res.status(status).json({ error: error.constructor.name, message: error.message })
             }
-        });
+        })
 
         //removeWork
 

@@ -42,7 +42,7 @@ function UserWorks({ targetUserId, refreshStamp, user, onProfileClick, isProfile
     }
 
     useEffect(() => {
-        refreshWorks();
+        refreshWorks()
     }, [refreshStamp, targetUserId])
 
     const handleWorkRemoved = () => refreshWorks()
@@ -51,7 +51,7 @@ function UserWorks({ targetUserId, refreshStamp, user, onProfileClick, isProfile
     const handleCommentsChanged = () => refreshWorks() // Función para refrescar comentarios
 
     return (
-        <section className="flex flex-col gap-6 px-2 py-14">
+        <section className='flex flex-col gap-6 px-2 py-14'>
             {works.map((work, index) => (
                 <div key={work.id}>
                     <Work

@@ -9,7 +9,7 @@ import Footer from '../components/Footer'
 
 const { ContentError, TypeError, RangeError } = errors
 
-function Profile({ onUserLoggedOut, onHomeClick, onProfileClick, onNewTeacherClick, onDashboardClick}) {
+function Profile({ onUserLoggedOut, onHomeClick, onProfileClick, onNewUserClick, onDashboardClick}) {
     const { targetUserId } = useParams()
     const [view, setView] = useState(null)
     const [refreshStamp, setRefreshStamp] = useState(null)
@@ -53,14 +53,18 @@ function Profile({ onUserLoggedOut, onHomeClick, onProfileClick, onNewTeacherCli
         event.preventDefault()
         onHomeClick()
     }
+
     const handleDashboardClick = (event) => {
         event.preventDefault()
         onDashboardClick()
     } 
+    const handleNewUser = (event) => {
+        event.preventDefault()
+        onNewUserClick()
+    }
 
     const handleProfileClick = event => {
         event.preventDefault()
-
         onProfileClick(user.id)
     }
 
@@ -68,10 +72,11 @@ function Profile({ onUserLoggedOut, onHomeClick, onProfileClick, onNewTeacherCli
         <div className='flex justify-center m-0 p-0  bg-gray-100'>
             <div className='w-full sm:w-1/2 md:w-1/3 px-4'>
                 <Header
+                 isHome={false}
                     onHomeClick={handleHomeClick}
                     onCreateClick={handleCreateClick}
                     onProfileClick={handleProfileClick}
-                    onNewTeacherClick={onNewTeacherClick}
+                    onNewUserClick={handleNewUser}
                     onDashboardClick={handleDashboardClick}
                     user={user}
                 />
@@ -79,7 +84,9 @@ function Profile({ onUserLoggedOut, onHomeClick, onProfileClick, onNewTeacherCli
                     <UserWorks targetUserId={targetUserId} refreshStamp={refreshStamp} user={user} isProfilePage={true} onProfileClick={() => { }} />
                     {view === 'createWork' && <CreateWork onWorkCreated={handleCreatedWork} onCancelClick={handleCancelClick} />}
                 </main>
-                <Footer onLogout={handleLogout} />
+                <Footer 
+                isHome={false}
+                onLogout={handleLogout} />
             </div>
         </div>
     )

@@ -10,7 +10,7 @@ import Footer from '../components/Footer'
 
 const { ContentError, MatchError } = errors
 
-function Login({ onUserLoggedIn, onRegisterClick, onHomeClick, onLoginClick, onContactClick, onCoursesClick, onShopClick, onPrivacyClick }) {
+function Login({ onUserLoggedIn, onHomeClick, onLoginClick, onContactClick, onCoursesClick, onShopClick, onPrivacyClick }) {
 
   const [error, setError] = useState(null)
 
@@ -82,7 +82,7 @@ function Login({ onUserLoggedIn, onRegisterClick, onHomeClick, onLoginClick, onC
   }
 
   return (
-    <div className="h-screen w-screen flex flex-col overflow-hidden bg-[whitesmoke]">
+    <div className='h-screen w-screen flex flex-col overflow-hidden bg-[whitesmoke]'>
       <Header
         isHome={true}
         onHomeClick={onHomeClick}
@@ -93,29 +93,29 @@ function Login({ onUserLoggedIn, onRegisterClick, onHomeClick, onLoginClick, onC
       />
 
       {/* MAIN AREA */}
-      <main className="flex-1 flex items-center justify-center py-15 px-4">
-        <div className="flex flex-col sm:flex-row w-full max-w-4xl bg-white rounded-lg shadow-lg overflow-hidden">
+      <main className='flex-1 flex items-center justify-center py-15 px-4'>
+        <div className='flex flex-col sm:flex-row w-full max-w-4xl min-h-[calc(100vh-160px)] bg-white rounded-lg shadow-lg overflow-hidden'>
           {/* Image */}
-          <div className="flex justify-center items-center w-full sm:w-1/2 p-4">
+          <div className='flex justify-center items-center w-full sm:w-1/2 p-4'>
             <img
-              src="../images/hero-image.png"
-              alt="logo"
-              className="max-h-[170px] sm:max-h-full max-w-full object-contain"
+              src='../images/hero-image.png'
+              alt='logo'
+              className='max-h-[170px] sm:max-h-full max-w-full object-contain'
             />
           </div>
 
           {/* Form */}
-          <div className="w-full sm:w-1/2 p-4 flex flex-col justify-center">
-            <Form onSubmit={handleSubmit} className="w-full">
-              <label htmlFor='email' className="text-sm">Email</label>
+          <div className='w-full sm:w-1/2 p-4 flex flex-col justify-center'>
+            <Form onSubmit={handleSubmit} className='w-full'>
+              <label htmlFor='email' className='text-sm'>Email</label>
               <Input type='text' id='email' placeholder=' ' />
               {error?.isEmailError && <span className='text-[#C13E65] text-xs'>{error.message}</span>}
 
-              <label htmlFor='password' className="text-sm">Password</label>
+              <label htmlFor='password' className='text-sm'>Password</label>
               <Input type='password' id='password' placeholder='' />
               {error?.isPasswordError && <span className='text-[#C13E65] text-xs'>{error.message}</span>}
 
-              <Button type="submit" className='mt-4'>LOGIN</Button>
+              <Button type='submit' className='mt-4'>LOGIN</Button>
               {error?.anotherError && <span className='text-[#C13E65] text-xs'>{error.message}</span>}
             </Form>
           </div>

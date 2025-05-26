@@ -50,7 +50,7 @@ function Comments({ workId, comments, user, onCommentCreated, onCommentsChanged 
                 <CreateComment workId={workId} onCommentCreated={handleCommentCreated} />
             )}
         </div>
-    );
+    )
 }
 
 export default Comments

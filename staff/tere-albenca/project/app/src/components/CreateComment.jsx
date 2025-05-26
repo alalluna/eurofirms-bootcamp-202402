@@ -17,15 +17,15 @@ function CreateComment({ workId, onCommentCreated }) {
     }
 
     return (
-        <div className="w-full flex flex-col mt-2 space-y-2">
+        <div className='w-full flex flex-col mt-2 space-y-2'>
             <input
-                type="text"
+                type='text'
                 value={commentText}
                 onChange={(e) => setCommentText(e.target.value)}
-                placeholder="Write a comment"
-                className="px-2 py-1 border rounded-md"
+                placeholder='Write a comment'
+                className='px-2 py-1 border rounded-md'
             />
-            <button onClick={handleCreateComment} className="px-2 py-1 bg-blue-500 text-white rounded-md">Add Comment</button>
+            <button onClick={handleCreateComment} className='px-2 py-1 bg-blue-500 text-white rounded-md'>Add Comment</button>
         </div>
     )
 }

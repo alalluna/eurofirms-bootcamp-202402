@@ -25,7 +25,7 @@ function retrieveUsersWorks(targetUserId) {
         })
         .catch(error => {
             throw new SystemError(error.message)
-        });
+        })
 }
 
 export default retrieveUsersWorks
