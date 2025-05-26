@@ -31,23 +31,7 @@ mongoose.connect(MONGO_URL)
 
         const allowedOrigins = ['http://localhost:5173', 'https://alalluna.netlify.app']
 
-        // server.use(cors()) //en lugar de esto es necesario permitir acceso a los header 
-        server.use(cors({
-            origin: function (origin, callback) {
-                if (!origin || allowedOrigins.includes(origin)) {
-                    callback(null, true)
-                } else {
-                    callback(new Error('Not allowed by CORS'))
-                }
-            },
-            credentials: true // Si usas cookies o autorización por header
-        }))
-
-        server.use((req, res, next) => {
-            res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization')
-            res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS')
-            next()
-        })
+        server.use(cors())
 
         // Endpoint para iniciar el flujo de autenticación con Google
 
@@ -174,10 +158,10 @@ mongoose.connect(MONGO_URL)
             } catch (error) {
                 let status = 500
 
-                if (error instanceof TypeError || error instanceof RangeError || error instanceof ContentError)
+                if ( error instanceof TypeError || error instanceof RangeError || error instanceof ContentError) 
                     status = 400
-
-                else if (error instanceof JsonWebTokenError || error instanceof TokenExpiredError) {
+                
+                else if ( error instanceof JsonWebTokenError || error instanceof TokenExpiredError) {
                     status = 401
                     error = new MatchError(error.message)
                 }
@@ -216,7 +200,7 @@ mongoose.connect(MONGO_URL)
                 if (error instanceof TypeError || error instanceof RangeError || error instanceof ContentError)
                     status = 400
 
-                else if (error instanceof JsonWebTokenError || error instanceof TokenExpiredError) {
+                else if ( error instanceof JsonWebTokenError || error instanceof TokenExpiredError) {
                     status = 401
                     error = new MatchError(error.message)
                 }

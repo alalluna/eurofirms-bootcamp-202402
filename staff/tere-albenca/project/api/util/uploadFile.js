@@ -31,7 +31,7 @@
 
 //     return { ref: fileRef, downloadURL: fileDownloadURL }
 // }
-import Jimp from 'jimp'
+import * as Jimp from 'jimp'
 import { ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage'
 import { storage } from '../config/firebase.js'
 

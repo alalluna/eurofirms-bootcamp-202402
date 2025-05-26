@@ -125,7 +125,6 @@ function App() {
         path="/dashboard"
         element={logic.isUserLoggedIn() ? (
           <Dashboard
-          user={user}
             onUserLoggedOut={handleLogoutClick}
             onHomeClick={handleHomeClick}
             onProfileClick={handleProfileClick}
@@ -142,7 +141,6 @@ function App() {
         path='/profile/:targetUserId'
         element={logic.isUserLoggedIn() ? (
           <Profile
-          user={user}
             onUserLoggedOut={handleLogoutClick}
             onHomeClick={handleHomeClick}
             onProfileClick={handleProfileClick}
@@ -157,7 +155,6 @@ function App() {
         path='/register'
         element={logic.isUserLoggedIn() ? (
           <Register
-          user={user}
             onTeacherRegistered={handleTeacherRegistered}
             onStudentRegistered={handleStudentRegistered}
             onHomeClick={handleHomeClick}
