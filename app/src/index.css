@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    @font-face {
+        font-family: 'Roboto';
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: url('/fonts/Roboto-Regular.ttf') format('truetype');
+    }
+
+    body {
+        font-family: 'Roboto', sans-serif;
+    }
+}
+.react-calendar {
+  --calendar-primary: #06b6d4; /* cyan-500 */
+  --calendar-hover: #22d3ee;   /* cyan-300 */
+  --calendar-selected: #0891b2; /* cyan-700 */
+}
+.react-calendar__tile--active {
+  background-color: var(--calendar-selected);
+  color: white;
+  border-radius: 0.375rem; /* rounded-md */
+}
+
+.react-calendar__tile--active:hover {
+  background-color: var(--calendar-hover);
+  color: black;
+}
+
+.react-calendar__tile--now {
+  background-color: var(--calendar-primary);
+  color: white;
+  border-radius: 0.375rem;
+}
+
+.react-calendar__tile:hover {
+  background-color: var(--calendar-hover);
+  color: black;
+  border-radius: 0.375rem;
+}
+
+/* tailwing paleta azul */
+/* 
+
+'cyan': {
+    '50': '#ecfeff',
+    '100': '#cffafe',
+    '200': '#a5f3fc',
+    '300': '#67e8f9',
+    '400': '#22d3ee',
+    '500': '#06b6d4',
+    '600': '#0891b2',
+    '700': '#0e7490',
+    '800': '#155e75',
+    '900': '#164e63',
+    '950': '#083344',
+}, */

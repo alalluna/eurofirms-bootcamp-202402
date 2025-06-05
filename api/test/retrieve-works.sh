@@ -1,0 +1,1 @@
+curl -X GET -H 'authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjNiMzhlMTRlM2UxZmJiNjA2MjA4ZDEiLCJyb2xlIjoic3R1ZGVudCIsImlhdCI6MTcxNTI2NDcxNywiZXhwIjoxNzE1MjY4MzE3fQ.0AJ2JbeQxQIq7U-QfyNfqAm7xxc9d3lwzy3i8sR2oUI' http://localhost:9050/works -v

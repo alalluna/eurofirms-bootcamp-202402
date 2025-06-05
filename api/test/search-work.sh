@@ -1,0 +1,1 @@
+curl -X GET -H 'authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjNiM2ZkYTIyMzJmNjI3NjMxZTExMGYiLCJyb2xlIjoidGVhY2hlciIsImlhdCI6MTcxNjM5NjQ5NywiZXhwIjoxNzE2NDAwMDk3fQ.O-q_XfAE5-70_GKBKqQMUY5f6FAt8UJv7LjeYmzzulg' http://localhost:9050/works/search?q=exercise -v
