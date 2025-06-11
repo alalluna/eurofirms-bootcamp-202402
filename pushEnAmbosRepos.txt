@@ -1,0 +1,77 @@
+
+Para confirmar que se añadió correctamente:
+
+git remote -v
+
+Deberías ver algo así:
+
+origin    https://github.com/alalluna/AcademyProject.git (fetch)
+origin    https://github.com/alalluna/AcademyProject.git (push)
+upstream  https://github.com/alalluna/eurofirms-bootcamp-202402.git (fetch)
+upstream  https://github.com/alalluna/eurofirms-bootcamp-202402.git (push)
+
+Ahora para subir los cambios a ambos repos:
+
+    A tu repo personal:
+
+git push origin main
+
+    Al repo original de Eurofirms (donde tienes el despliegue):
+
+git push upstream main
+
+Y para traer actualizaciones del repo original a tu local:
+
+git fetch upstream
+git merge upstream/main
+
+(O si prefieres hacer rebase para un historial más limpio)
+Qué puedes hacer ahora:
+1. Para subir tus cambios a tu repo personal:
+
+git push origin main
+
+2. Para subir tus cambios (y que se despliegue) en Eurofirms:
+
+git push upstream main
+
+3. Para traer los cambios nuevos que haya en Eurofirms a tu local:
+
+git fetch upstream
+git merge upstream/main
+
+(O también puedes hacer git rebase upstream/main si prefieres un historial más limpio.)
+
+Si quieres, te puedo ayudar a crear alias o scripts para no tener que escribir mucho.
+
+¿Quieres?
+Heu dit:
+yo quiero que al subir cambios se cambie en ambas partes
+ChatGPT ha dit:
+
+Claro, quieres que cuando hagas un solo comando, se suba a ambos repos remotos (origin y upstream) al mismo tiempo.
+
+Git no tiene esto activado por defecto, pero se puede configurar con un remoto especial que empuje a varios repos a la vez.
+Cómo configurar un remoto que haga push a ambos remotos a la vez
+
+Desde tu carpeta de proyecto, ejecuta:
+
+git remote set-url --add --push origin https://github.com/alalluna/AcademyProject.git
+git remote set-url --add --push origin https://github.com/alalluna/eurofirms-bootcamp-202402.git
+
+Con esto:
+
+    El remoto origin tendrá dos URLs para push
+
+    Cuando hagas git push origin main se enviará a ambos repositorios
+
+Verifica que quedó bien con:
+
+git remote get-url --push origin
+
+Debería mostrarte las dos URLs.
+Después solo usa:
+
+git push origin main
+
+Y subirá a ambos.

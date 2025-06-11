@@ -38,40 +38,57 @@ class UnauthorizedError extends Error {
     }
 }
 
-function handleError(res, error) {
-    let status = 500
 
-    if (error instanceof ContentError || error instanceof TypeError || error instanceof RangeError)
-        status = 400
-    else if (error instanceof DuplicityError)
-        status = 409
-    else if ( error.name === 'JsonWebTokenError' || error.name === 'TokenExpiredError')
-        status = 401
-    else if (error instanceof UnauthorizedError)
-    status = 401
-    else if (error instanceof MatchError)
-        status = 403 
-
-    res.status(status).json({ error: error.constructor?.name || 'Error', message: error.message })
+class ValidationError extends Error {
+     constructor(message) {
+        super(message)
+        this.name = ValidationError.name
+    }
 }
 
-export {
-    SystemError,
-    ContentError,
-    DuplicityError,
-    MatchError,
-    UnauthorizedError,
-    handleError
+class NotFoundError extends Error {
+     constructor(message) {
+        super(message)
+        this.name = NotFoundError.name
+    }
+}
+
+class CredentialsError extends Error {
+     constructor(message) {
+        super(message)
+        this.name = CredentialsError.name
+    }
+}
+
+class AuthorshipError extends Error {
+     constructor(message) {
+        super(message)
+        this.name = AuthorshipError.name
+    }
 }
 
 const errors = {
     SystemError,
     ContentError,
     DuplicityError,
-    TypeError,
-    RangeError,
+    MatchError,
     UnauthorizedError,
-    MatchError
+    ValidationError,
+    NotFoundError,
+    CredentialsError,
+    AuthorshipError
 }
 
 export default errors
+export {
+   SystemError,
+    ContentError,
+    DuplicityError,
+    MatchError,
+    UnauthorizedError,
+    ValidationError,
+    NotFoundError,
+    CredentialsError,
+    AuthorshipError
+
+}
