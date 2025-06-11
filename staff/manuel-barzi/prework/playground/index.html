@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en" style="height: 100%;">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Playground</title>
+</head>
+
+<body style="height: 100%;">
+    <div id="car"
+        style="width: 60px; position: absolute; _left: 300px; _top: 600px; transform: translate(300px, 600px);">
+        <div style="background-color: red; padding: 2px; display: flex; flex-direction: column; gap: 1px;">
+            <div style="background-color: skyblue; display: flex; justify-content: right;">
+                😜
+            </div>
+
+            <div style="padding: 1px; display: flex; justify-content: space-between;">
+                <div style="width: 10px; height: 10px;background-color: yellow;">
+                </div>
+
+                <div style="width: 10px; height: 10px;background-color: yellow;">
+                </div>
+            </div>
+
+            <div style="border-style: solid; border-width: 5px;">
+
+            </div>
+        </div>
+
+        <div style="margin-top: 1px; margin-bottom: 1px; display: flex; justify-content: space-between;">
+            <div style="width: 10px; height: 15px;background-color: gray;">
+            </div>
+
+            <div style="width: 10px; height: 15px;background-color: gray;">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /*
+        document.addEventListener('keydown', function(event) {
+            console.log(event.key)
+        })
+
+        document.onkeydown = function(event) {
+            console.log(event.key)
+        }
+        */
+
+        var x = 300, y = 600
+
+        document.onkeydown = function (event) {
+            console.log(event.key)
+
+            if (event.key === 'ArrowRight') {
+                x = x + 10
+            } else if (event.key === 'ArrowLeft') {
+                x = x - 10
+            } else if (event.key === 'ArrowUp') {
+                y = y - 10
+            } else if (event.key === 'ArrowDown') {
+                y = y + 10
+            }
+
+            var transform = 'translate(' + x + 'px, ' + y + 'px)'
+
+            car.style.transform = transform
+        }
+    </script>
+
+    <div id="horse" style="position: absolute; width: 45px; left: 100px; top: 500px;">
+        <div style="position: absolute; left: 5px; top: 4px;">
+            🤠
+        </div>
+        <div style="position: relative; left: 25px;">
+            <div style="display: flex; gap: 1px;">
+                <div style="background-color: brown; width: 2px; height: 5px;"></div>
+                <div style="background-color: brown; width: 2px; height: 5px;"></div>
+            </div>
+
+            <div style="background-color: brown; width: 20px; height: 10px; position: relative;">
+                <div style="background-color: white; width: 5px; height: 5px; position: absolute; left: 3px; top: 2px;">
+                    <div
+                        style="background-color: black; width: 2px; height: 2px; position: absolute; left: 2px; top: 1px;">
+                    </div>
+                </div>
+            </div>
+
+            <div style="background-color: brown; width: 5px; height: 10px;"></div>
+        </div>
+
+        <div style="background-color: brown; width: 30px; height: 10px;"></div>
+
+        <div style="display: flex; justify-content: space-between; width: 30px;">
+            <div style="background-color: brown; width: 2px; height: 15px;"></div>
+            <div style="background-color: brown; width: 2px; height: 15px;"></div>
+            <div style="background-color: brown; width: 2px; height: 15px;"></div>
+            <div style="background-color: brown; width: 2px; height: 15px;"></div>
+        </div>
+    </div>
+
+    <div id="mickey">
+        <div id="mickey-ear" class="mickey-ear-left"></div>
+        <div id="mickey-ear" class="mickey-ear-right"></div>
+        <div id="mickey-face">
+            <div id="mickey-eye" class="mickey-eye-left">
+                <div id="mickey-iris"></div>
+            </div>
+            <div id="mickey-eye" class="mickey-eye-right">
+                <div id="mickey-iris"></div>
+            </div>
+
+            <div id="mickey-mouth"></div>
+        </div>
+        <div id="mickey-body">
+            <div id="mickey-foot" class="mickey-foot-left">🥾</div>
+            <div id="mickey-foot" class="mickey-foot-right">🥾</div>
+        </div>
+    </div>
+
+    <style>
+        /* #mickey {
+            border-color: red;
+            border-width: 1px;
+            border-style: solid;
+            width: 20px;
+            height: 20px;
+        } */
+
+        #mickey-ear {
+            width: 10px;
+            height: 10px;
+            background-color: black;
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        .mickey-ear-right {
+            transform: translate(15px);
+            animation-name: mickey-ear-right;
+            animation-duration: .25s;
+            animation-iteration-count: infinite;
+        }
+
+        @keyframes mickey-ear-right {
+            0% {
+                transform: translate(15px);
+            }
+
+            25% {
+                transform: translate(18px, 3px);
+            }
+        }
+
+        #mickey-face {
+            width: 15px;
+            height: 15px;
+            border-color: black;
+            border-width: 1px;
+            border-style: solid;
+            position: absolute;
+            border-radius: 50%;
+            transform: translate(4px, 7px);
+        }
+
+        #mickey-eye {
+            width: 5px;
+            height: 5px;
+            border-color: black;
+            border-width: 1px;
+            border-style: solid;
+            border-radius: 50%;
+            position: absolute;
+            top: 3px;
+        }
+
+        .mickey-eye-left {
+            transform: translate(1px);
+        }
+
+        .mickey-eye-right {
+            transform: translate(7px);
+        }
+
+        #mickey-iris {
+            width: 3px;
+            height: 3px;
+            background-color: black;
+            border-radius: 50%;
+            transform: translate(1px, 1px);
+            animation-name: mickey-iris;
+            animation-duration: 20s;
+            animation-iteration-count: infinite;
+        }
+
+        @keyframes mickey-iris {
+            0% {
+                transform: translate(1px, 1px);
+            }
+
+            10% {
+                transform: translate(1px, 2px);
+            }
+
+            20% {
+                transform: translate(1px, 1px);
+            }
+
+            30% {
+                transform: translate(2px, 1px);
+            }
+
+            40% {
+                transform: translate(1px, 1px);
+            }
+
+            50% {
+                transform: translate(1px, 0px);
+            }
+
+            60% {
+                transform: translate(1px, 1px);
+            }
+
+            70% {
+                transform: translate(0px, 1px);
+            }
+
+            80% {
+                transform: translate(1px, 1px);
+            }
+        }
+
+        #mickey-mouth {
+            width: 3px;
+            height: 1px;
+            background-color: black;
+            position: absolute;
+            transform: translate(6px, 11px);
+            animation-name: mickey-mouth;
+            animation-duration: 10s;
+            animation-iteration-count: infinite;
+        }
+
+        @keyframes mickey-mouth {
+            0% {
+                height: 1px;
+            }
+
+            50% {
+                height: 3px;
+            }
+
+            100% {
+                height: 1px;
+            }
+        }
+
+        #mickey-foot {
+            position: absolute;
+        }
+
+        .mickey-foot-right {
+            transform: translate(12px, 20px) rotateZ(-40deg);
+        }
+
+        .mickey-foot-left {
+            transform: translate(4px, 21px) rotateZ(-20deg);
+            z-index: 1;
+        }
+    </style>
+</body>
+
+</html>

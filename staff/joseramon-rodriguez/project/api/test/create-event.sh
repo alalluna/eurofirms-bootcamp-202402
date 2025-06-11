@@ -1,0 +1,2 @@
+curl -X POST -H 'Content-type: application/json' -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjM3ZmI2MWY5OGVhM2M1N2I3NmVkNTEiLCJpYXQiOjE3MTUwODgyMDksImV4cCI6MTcxNTA5MDAwOX0.TksrxiUh3A-0pJLT2DNaW1R1Edob_HnZGvOH9yB_6zY' -d '{"name":"event #1","description":"the second tournament","players":["player1","player2"]
+,"startDate":"2025-11-11 20:00","endDate":"2025-11-11 20:10"}' http://localhost:8080/event -v

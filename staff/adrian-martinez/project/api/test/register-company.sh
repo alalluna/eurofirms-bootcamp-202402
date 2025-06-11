@@ -1,0 +1,1 @@
+curl -X POST -H 'Content-type: application/json' -d '{"name":"BySideCar","surnames":null,"age":null,address:"Calle Real, Nº5 - A Coruña","email":"admin@bysidecar.com","password":"12345678"}' http://localhost:8989/users -v

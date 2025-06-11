@@ -1,0 +1,1 @@
+curl -X GET -H 'Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjNkZWYyODk5NjFlMzhmMDI4YzIyODkiLCJpYXQiOjE3MTU2OTU0MDksImV4cCI6MTcxNTY5NzIwOX0.AC-YLU2jmrSOMAE7pqvpWyIZHsh97LjasPBVUu18wt0' http://localhost:8080/bet/663df6505bafcafe9640bbd3 -v

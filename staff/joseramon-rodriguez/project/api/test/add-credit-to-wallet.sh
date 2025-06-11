@@ -1,0 +1,1 @@
+curl -X PATCH -H 'Content-type: application/json' -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjNkZWYyODk5NjFlMzhmMDI4YzIyODkiLCJpYXQiOjE3MTYyNzY5ODksImV4cCI6MTcxNjI3ODc4OX0.395OOt7WHYS-WEVDZYMd8W212fBddWjbolMZky-HUG0' -d '{"amount": 1000}' http://localhost:8080/users/wallet/add -v

@@ -1,0 +1,1 @@
+curl -X GET -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjUzNGYzZjJlZTZlOWFhMTY3Y2EwOTQiLCJyb2xlIjoiY29tcGFueSIsImlhdCI6MTcxNjczNzQ1MiwiZXhwIjoxNzE2NzM5MjUyfQ.jWUZa_Y9eEINOTm54uRHOF1hIOS4Y-yXBdYEhtEdBD0' http://127.0.0.1:8989/users/663fdeb2a4f8c5a8fada1fe8/careers -v

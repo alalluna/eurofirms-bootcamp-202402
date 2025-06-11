@@ -1,0 +1,37 @@
+[
+    {
+        "name": "1a cruzada del sur",
+        "description": "torneo clasificatorio para ibericon de la conferencia sur",
+        "players": [
+            "Ace",
+            "Rudy",
+            "Jon Sao"
+        ],
+        "startDate": "2025-05-09 16:37",
+        "endDate": "2025-06-09 16:37",
+        "winner": "Ace"
+    },
+    {
+        "name": "2a cruzada del sur",
+        "description": "torneo clasificatorio para ibericon de la conferencia sur",
+        "players": [
+            "Ace",
+            "Rudy",
+            "Jon Sao"
+        ],
+        "winner": "Rudy",
+        "startDate": "2026-05-09 16:37",
+        "endDate": "2026-06-09 16:37"
+    },
+    {
+        "name": "3a cruzada del sur",
+        "description": "torneo clasificatorio para ibericon de la conferencia sur",
+        "players": [
+            "Ace",
+            "Rudy",
+            "Jon Sao"
+        ],
+        "startDate": "2027-05-09 16:37",
+        "endDate": "2027-06-09 16:37"
+    }
+]

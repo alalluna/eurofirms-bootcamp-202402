@@ -1,0 +1,1 @@
+curl -X POST -H 'Content-type: application/json' -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjM3ZmI2MWY5OGVhM2M1N2I3NmVkNTEiLCJpYXQiOjE3MTUwODgyMDksImV4cCI6MTcxNTA5MDAwOX0.TksrxiUh3A-' -d '{"event":"663a3eebd05e4fd1612066ff","player":"6639da427c96ad4fca6bfed3","amount": 50}' http://localhost:8080/event -v

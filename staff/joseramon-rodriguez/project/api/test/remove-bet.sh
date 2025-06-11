@@ -1,0 +1,1 @@
+curl -X DELETE -H 'Content-type: application/json' -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjNkZWYyODk5NjFlMzhmMDI4YzIyODkiLCJpYXQiOjE3MTUzNTE1MjgsImV4cCI6MTcxNTM1MzMyOH0.-5AuIKJnYz6sLDHqxdlloy0wCKf03VU41Q0cljT0V4Q' http://localhost:8080/bet/663dfb7c1fc5d60a0eb4cc61 -v

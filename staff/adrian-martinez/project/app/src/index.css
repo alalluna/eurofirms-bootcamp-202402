@@ -1,0 +1,160 @@
+@import url('https://fonts.googleapis.com/css2?family=Madimi+One&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+* {
+  margin: 0;
+}
+
+body{
+  background-color: white;
+}
+
+#app{
+  font-size: 52px;
+  font-family: "Madimi One";
+  float: left;
+  cursor: pointer;
+}
+
+input{
+  border: 2px solid black;
+  padding: 3px;
+  margin: 3px;
+}
+
+header{
+  margin-left: 2%;
+  margin-right: 2%;
+  padding: 30px;
+  margin-top: 10px;
+  border: 2px solid black;
+  border-radius: 7%;
+  background-color: lightskyblue;
+  color: black;
+  font-family: "Verdana";
+  font-weight: bold;
+  width: 92%;
+  min-width: 50%;
+  height:200px;
+  min-height: 50px;
+}
+
+button{
+  padding: 4px;
+  width: auto;
+  font-size: 18px;
+  font-weight: bold;
+  background-color: white;
+  color: black;
+  border: 2px solid black;
+  border-radius: 8%;
+  height: auto;
+  cursor: pointer;
+}
+
+label{
+  font-weight: bold;
+  margin: 3px;
+}
+
+button.volver{
+  margin-bottom: 0%;
+  margin-top: 40px;
+}
+
+button:hover{
+  color: green;
+  font-size: 16px;
+}
+
+.titular{
+  position: relative;
+  float: left;
+  margin-left: 23%;
+  font-size: 28px;
+  font-weight: bold;
+  border-bottom: 3px solid;
+}
+
+#area-perfil{
+  margin-right:2%;
+  position: relative;
+  float:right;
+  width: 30%;
+}
+
+#area-buscador{
+  position: relative;
+  margin-top: 30px;
+  margin-left: 20%;
+  float: left;
+  width: 40%;
+  height: auto;
+  border: none;
+}
+
+.register{
+  margin-left: 50px;
+}
+
+.buscar{
+  margin-left: 50%;
+}
+
+main{
+  margin-left: 0%;
+  margin-right: 2%;
+  width: 92%;
+  display: flex;
+}
+
+#aside-left{
+  padding: 5px;
+  margin-top: 10px;
+  margin-left: 2%;
+  position: relative;
+  float: left;
+  border: 1px solid black;
+  border-radius: 20%;
+  background-color: lightskyblue;
+  color: black;
+  font-family: "Verdana";
+  font-size: 18px;
+  font-weight: bold;
+  width: 15%;
+  min-width: 5%;
+  height:200px;
+  min-height: 50px;
+}
+
+#container{
+  position: relative;
+  padding: 30px;
+  margin-top: 10px;
+  float: right;
+  margin-left: 2%;
+  border: 1px solid black;
+  border-radius: 5%;
+  background-color: white;
+  color: black;
+  font-family: "Verdana";
+  font-size: 18px;
+  width: 100%;
+  min-width: 30%;
+  height: auto;
+  min-height: auto;
+}
+
+nav > ul li{
+  display: flex;
+  text-align: left;
+  margin-top: 15px;
+  list-style-type: none;
+  cursor: pointer;
+}
+
+
