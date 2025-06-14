@@ -1,7 +1,7 @@
 import { User, Work } from '../data/index.js'
 import { errors, validate } from 'com'
 
-const { SystemError, MatchError } = errors
+const { SystemError, NotFoundError } = errors
 
 // Api logic methods
 function retrieveWorks(userId) {
@@ -10,7 +10,7 @@ function retrieveWorks(userId) {
     return User.findById(userId)
         .catch(error => { throw new SystemError(error.message) })
         .then(user => {
-            if (!user) throw new MatchError('user not found')
+            if (!user) throw new NotFoundError('user not found')
 
             return Work.find()
                 .sort({ date: -1 })

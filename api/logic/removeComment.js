@@ -1,7 +1,7 @@
 import { User, Work, Comment } from '../data/index.js'
 import { errors, validate } from 'com'
 
-const { SystemError, MatchError } = errors
+const {  NotFoundError, SystemError } = errors
 
 function removeComment(userId, workId, commentId) {
     validate.id(userId, 'userId')
@@ -12,21 +12,21 @@ function removeComment(userId, workId, commentId) {
         .catch(error => { throw new SystemError(error.message) })
         .then(user => {
             if (!user)
-                throw new MatchError('teacher not found')
+                throw new  NotFoundError('teacher not found')
 
             return Work.findById(workId)
                 .catch(error => { throw new SystemError(error.message) })
         })
         .then(work => {
             if (!work)
-                throw new MatchError('work not found')
+                throw new  NotFoundError('work not found')
 
             return Comment.findById(commentId)
                 .catch(error => { throw new SystemError(error.message) })
         })
         .then(comment => {
             if (!comment)
-                throw new MatchError(' not found')
+                throw new  NotFoundError('comment not found')
 
             return Comment.deleteOne({ _id: comment._id })
                 .catch(error => { throw new SystemError(error.message) })

@@ -1,7 +1,7 @@
 import { User } from '../data/index.js'
 import { errors, validate } from 'com'
 
-const {MatchError, SystemError, DuplicityError } = errors
+const { NotFoundError, UnauthorizedError, SystemError, DuplicityError } = errors
 
 function registerTeacher(userId, name, surname, email, password) {
     validate.id(userId, 'userId')
@@ -13,18 +13,15 @@ function registerTeacher(userId, name, surname, email, password) {
     return User.findById(userId)
     .catch(error => { throw new SystemError(error.message) })
     .then(loggedUser => {
-      if (!loggedUser)
-        throw new MatchError('user not found')
+       if (!loggedUser) throw new NotFoundError('user not found')
 
-      if (loggedUser.role !== 'teacher')
-        throw new MatchError('user is not a teacher')
+      if (loggedUser.role !== 'teacher') throw new UnauthorizedError('user is not a teacher')
       
     
     return User.findOne({ email })
         .catch(error => { throw new SystemError(error.message) })
         .then(existingUser => {
-          if (existingUser)
-            throw new DuplicityError('this teacher already exists')
+          if (existingUser) throw new DuplicityError('this teacher already exists')
 
           const newUser = {
             name,

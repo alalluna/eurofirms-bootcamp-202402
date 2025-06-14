@@ -1,7 +1,7 @@
 import { User } from '../data/index.js'
 import { validate, errors } from 'com'
 
-const { SystemError, MatchError } = errors
+const { SystemError, NotFoundError } = errors
 
 function getUserDetailsByIds(userIds) {
     if (!Array.isArray(userIds)) {
@@ -14,7 +14,7 @@ function getUserDetailsByIds(userIds) {
         .catch(error => { throw new SystemError(error.message) })
         .then(users => {
             if (!users.length) {
-                throw new MatchError('no users found')
+                throw new NotFoundError('no users found')
             }
 
             return users.map(user => ({

@@ -1,7 +1,7 @@
 import { User } from '../data/index.js'
 import { errors, validate } from 'com'
 
-const { SystemError, MatchError } = errors
+const { SystemError, NotFoundError ,CredentialsError} = errors
 
 function authenticateUser(email, password) {
     validate.email(email)
@@ -11,10 +11,10 @@ function authenticateUser(email, password) {
         .catch(error => { throw new SystemError(error.message) })
         .then(user => {
             if (!user)
-                throw new MatchError('user not found')
+                throw new NotFoundError('user not found')
 
             if (user.password !== password)
-                throw new MatchError('wrong credentials')
+                throw new CredentialsError('wrong credentials')
 
             return {
                 id: user.id,

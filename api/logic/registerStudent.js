@@ -1,7 +1,7 @@
 import { User } from '../data/index.js'
 import { errors, validate } from 'com'
 
-const {MatchError, SystemError, DuplicityError } = errors
+const { NotFoundError, UnauthorizedError , SystemError, DuplicityError } = errors
 
 function registerStudent(userId,name, surname, email, password){
   validate.id(userId, 'userId')
@@ -13,11 +13,9 @@ function registerStudent(userId,name, surname, email, password){
   return User.findById(userId)
     .catch(error => { throw new SystemError(error.message) })
     .then(loggedUser => {
-      if (!loggedUser)
-        throw new MatchError('user not found')
+      if (!loggedUser) throw new NotFoundError('user not found')
 
-      if (loggedUser.role !== 'teacher')
-        throw new MatchError('user is not a teacher')
+      if (loggedUser.role !== 'teacher') throw new UnauthorizedError('user is not a teacher')
       
    return User.findOne({ email })
         .catch(error => { throw new SystemError(error.message) })
@@ -42,33 +40,6 @@ function registerStudent(userId,name, surname, email, password){
 
 export default registerStudent
 
-
-// async function registerStudent(userId,name, surname, email, password) {
-//     validate.id(userId, 'userId')
-//     validate.name(name)
-//     validate.surname(surname)
-//     validate.email(email)
-//     validate.password(password)
-
-//     const user = await User.findById(userId)
-//     if (!user) throw new MatchError('User not found')
-//     if (user.role !== 'teacher') throw new MatchError('user is not a teacher')
-
-// const existingUser = await User.findOne({ email })
-//   if (existingUser) throw new DuplicityError('This student already exists')
-
-//   const newUser = { 
-//     name, 
-//     surname, 
-//     email, 
-//     password, 
-//     role: 'student' 
-//   }
-  
-//   await User.create(newUser)
-// }
-
-// export default registerStudent
 
 
 

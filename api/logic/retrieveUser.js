@@ -1,7 +1,7 @@
 import { User } from '../data/index.js'
 import { errors, validate } from 'com'
 
-const { SystemError, MatchError } = errors
+const { SystemError, NotFoundError } = errors
 
 function retrieveUser(userId, targetUserId) {
     validate.id(userId, 'userId')
@@ -10,13 +10,13 @@ function retrieveUser(userId, targetUserId) {
     return User.findById(userId)
         .catch(error => { throw new SystemError(error.message) })
         .then(user => {
-            if (!user) { throw new MatchError('user not found') }
+            if (!user) { throw new NotFoundError('user not found') }
 
 
             return User.findById(targetUserId).select('-__v -password').lean()
                 .catch(error => { throw new SystemError(error.message) })
                 .then(targetUser => {
-                    if (!targetUserId) { throw new MatchError(' target user not found') }
+                    if (!targetUser) { throw new NotFoundError(' target user not found') }
 
                     targetUser.id = targetUser._id.toString()
 

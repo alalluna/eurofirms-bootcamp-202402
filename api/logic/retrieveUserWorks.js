@@ -1,7 +1,7 @@
 import { Work, User } from '../data/index.js'
 import { errors, validate } from 'com'
 
-const { SystemError, MatchError } = errors
+const { SystemError, NotFoundError } = errors
 
 function retrieveUserWorks(userId, targetUserId) {
     validate.id(userId, 'userId')
@@ -10,7 +10,7 @@ function retrieveUserWorks(userId, targetUserId) {
     return User.findById(userId)
         .catch(error => { throw new SystemError(error.message) })
         .then(user => {
-            if (!user) throw new MatchError('userId not found')
+            if (!user) throw new NotFoundError('userId not found')
 
             return Work.find({ author: targetUserId })
                 .select('-__v')
@@ -20,7 +20,7 @@ function retrieveUserWorks(userId, targetUserId) {
                 .catch(error => { throw new SystemError(error.message) })
                 .then(works => {
                     // if (works.length === 0) throw new MatchError('Firstly upload work please')
-                    if (!works) throw new MatchError('works not found')
+                    if (!works) throw new NotFoundError('works not found')
                     works.forEach(work => {
                         if (work._id) {
                             work.id = work._id.toString()

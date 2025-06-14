@@ -1,7 +1,7 @@
 import { User, Lesson } from '../data/index.js'
 import { validate, errors } from 'com'
 
-const { SystemError, MatchError } = errors
+const { SystemError,NotFoundError, UnauthorizedError} = errors
 
 function createLesson(userId, title, image, description, link, video) {
     validate.id(userId, 'userId')
@@ -15,10 +15,10 @@ function createLesson(userId, title, image, description, link, video) {
         .catch(error => { throw new SystemError(error.message) })
         .then(user => {
             if (!user)
-                throw new MatchError('user not found')
+                throw new NotFoundError('user not found')
 
             if (user.role !== 'teacher')
-                throw new MatchError('user is not a teacher')
+                throw new UnauthorizedError('user is not a teacher')
 
             const lesson = {
                 teacher: user._id,

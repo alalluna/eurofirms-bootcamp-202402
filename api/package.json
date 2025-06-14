@@ -7,9 +7,10 @@
     "test": "test"
   },
   "scripts": {
-  "build": "tsc",
-  "start": "node dist/index.js",
-  "dev": "nodemon src/index.ts"
+   "build": "tsc",
+   "start": "node index.js",
+   "inspect":"node --inspect-brk index.js",
+   "dev": "nodemon src/index.ts"
   },
   "type": "module",
   "keywords": [],

@@ -1,7 +1,7 @@
 import { User, Work } from '../data/index.js'
 import { errors, validate } from 'com'
 
-const { SystemError, MatchError } = errors
+const { SystemError, NotFoundError } = errors
 
 // Api logic methods
 
@@ -13,14 +13,14 @@ async function giveLikeWork(userId, workId) {
 
     try {
         user = await User.findById(userId)
-        if (!user) throw new MatchError('user not found')
+        if (!user) throw new NotFoundError('user not found')
     } catch (error) {
         throw new SystemError(error.message)
     }
 
     try {
         work = await Work.findById(workId)
-        if (!work) throw new MatchError('work not found')
+        if (!work) throw new NotFoundError('work not found')
     } catch (error) {
         throw new SystemError(error.message)
     }

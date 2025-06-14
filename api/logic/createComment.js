@@ -1,7 +1,7 @@
 import { User, Work, Comment } from '../data/index.js'
 import { errors, validate } from 'com'
 
-const { SystemError, MatchError } = errors
+const { SystemError, UnauthorizedError, NotFoundError } = errors
 
 function createComment(userId, workId, text) {
     validate.id(userId, 'userId')
@@ -12,17 +12,17 @@ function createComment(userId, workId, text) {
         .catch(error => { throw new SystemError(error.message) })
         .then(user => {
             if (!user)
-                throw new MatchError('user not found')
+                throw new  NotFoundError('user not found')
 
             if (user.role !== 'teacher')
-                throw new MatchError('user is not a teacher')
+                throw new UnauthorizedError('user is not a teacher')
 
             return Work.findById(workId)
                 .catch(error => { throw new SystemError(error.message) })
 
                 .then(work => {
                     if (!work)
-                        throw new MatchError('work not found')
+                        throw new NotFoundError ('work not found')
 
                     const comment = {
                         teacher: user._id,

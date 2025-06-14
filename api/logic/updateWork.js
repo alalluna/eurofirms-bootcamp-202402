@@ -1,7 +1,7 @@
 import { User, Work } from '../data/index.js'
 import { errors, validate } from 'com'
 
-const { SystemError, MatchError } = errors
+const { SystemError, NotFoundError, Unauthorized  } = errors
 
 function updateWork(userId, workId, title, text) {
     validate.id(userId, 'userId')
@@ -13,16 +13,16 @@ function updateWork(userId, workId, title, text) {
         .catch(error => { throw new SystemError(error.message) })
         .then(user => {
             if (!user)
-                throw new MatchError('user not found')
+                throw new NotFoundError('user not found')
 
             return Work.findById(workId)
                 .then(work => {
                     if (!work)
-                        throw new MatchError('work not found')
+                        throw new NotFoundError('work not found')
 
                     // Permitir actualización si el usuario es el autor o un teacher
                     if (userId !== work.author.toString() && user.role !== 'teacher')
-                        throw new MatchError('user not authorized to edit this work')
+                        throw new Unauthorized('user not authorized to edit this work')
 
                     work.title = title
                     work.text = text

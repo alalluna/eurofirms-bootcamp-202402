@@ -1,7 +1,7 @@
 import { User, Lesson } from '../data/index.js'
 import { errors, validate } from 'com'
 
-const { SystemError, MatchError } = errors
+const { SystemError, NotFoundError} = errors
 
 function retrieveLessons(userId) {
     validate.id(userId, 'userId')
@@ -10,7 +10,7 @@ function retrieveLessons(userId) {
         .catch(error => { throw new SystemError(error.message) })
         .then(user => {
             if (!user) {
-                throw new MatchError('user not found')
+                throw new NotFoundError('user not found')
             }
 
             return Lesson.find().sort({ date: -1 }).select('-__v').populate('teacher', 'name').lean()

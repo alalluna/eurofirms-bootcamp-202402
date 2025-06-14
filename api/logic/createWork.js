@@ -1,7 +1,7 @@
 import { User, Work } from '../data/index.js'
 import { validate, errors } from 'com'
 
-const { SystemError, MatchError, ContentError } = errors
+const { SystemError, NotFoundError, ContentError } = errors
 
 // Función para crear un nuevo trabajo
 async function createWork(userId, title, imageUrl, text) {
@@ -12,9 +12,8 @@ async function createWork(userId, title, imageUrl, text) {
         validate.text(text, 'text')
 
         const user = await User.findById(userId)
-        if (!user) {
-            throw new MatchError('User not found')
-        }
+        if (!user) throw new NotFoundError('User not found')
+        
 
         const work = {
             author: user._id,
@@ -28,9 +27,9 @@ async function createWork(userId, title, imageUrl, text) {
         return createdWork
     } catch (error) {
         if (error instanceof TypeError || error instanceof RangeError || error instanceof ContentError) {
-            throw new SystemError(error.message)
+           throw new ContentError(error.message)
         } else {
-            throw error
+            throw new SystemError(error.message)
         }
     }
 }

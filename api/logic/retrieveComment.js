@@ -1,7 +1,7 @@
 import { User, Work, Comment } from '../data/index.js'
 import { errors, validate } from 'com'
 
-const { SystemError, MatchError } = errors
+const { SystemError, NotFoundError } = errors
 
 function retrieveComment(userId, workId, commentId) {
     validate.id(userId, 'userId')
@@ -11,17 +11,17 @@ function retrieveComment(userId, workId, commentId) {
     return User.findById(userId)
         .catch(error => { throw new SystemError(error.message) })
         .then(user => {
-            if (!user) throw new MatchError('teacher not found')
+            if (!user) throw new NotFoundError('teacher not found')
 
             return Work.findById(workId)
                 .catch(error => { throw new SystemError(error.message) })
                 .then(work => {
-                    if (!work) throw new MatchError('work not found')
+                    if (!work) throw new NotFoundError('work not found')
 
                     return Comment.findById(commentId).select('-__v').populate('teacher', 'name').lean()
                         .catch(error => { throw new SystemError(error.message) })
                         .then(comment => {
-                            if (!comment) throw new MatchError('comment not found')
+                            if (!comment) throw new NotFoundError('comment not found')
                             comment.id = comment._id.toString()
 
                             delete comment._id

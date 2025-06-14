@@ -10,7 +10,7 @@ import { upload } from './config/multer.js'
 import { uploadFile } from './util/uploadFile.js'
 import handleError from './middlewares/handleError.js'
 import verifyToken from './middlewares/verifyToken.js'
-import registerStudentRouter from './routes/users/registerStudent.js'
+import usersRouter from './routes/users/index.js'
 
 dotenv.config() // Cargar variables de entorno
 // const { JsonWebTokenError, TokenExpiredError } = jwt
@@ -158,53 +158,8 @@ mongoose.connect(MONGO_URL)
 
         // ---------------------- USERS ----------------------
         //registerStudent
-
-        server.use('/users/students', registerStudentRouter)
-
-
-        //registerTeacher
-
-        server.post('/users/teachers', verifyToken, jsonBodyParser, async (req, res, next) => {
-
-            try {
-                const { userId } = req
-                const { name, surname, email, password } = req.body
-                await logic.registerTeacher(userId, name, surname, email, password)
-                res.status(201).send()
-
-            } catch (error) {
-                next(error)
-            }
-        })
-
-        //authenticateUser
-
-        server.post('/users/auth', jsonBodyParser, async (req, res, next) => {
-            try {
-                const { email, password } = req.body
-                const user = await logic.authenticateUser(email, password)
-                const token = jwt.sign({ sub: user.id, role: user.role }, JWT_SECRET, { expiresIn: '120m' })
-                res.status(200).json(token)
-
-            } catch (error) {
-                next(error)
-            }
-        })
-
-        //retreiveUser
-
-        server.get('/users/:targetUserId', verifyToken, async (req, res, next) => {
-            try {
-                const { userId } = req
-                const { targetUserId } = req.params
-                const user = await logic.retrieveUser(userId, targetUserId)
-                res.json(user)
-
-            } catch (error) {
-                next(error)
-            }
-
-        })
+        server.use('/users', usersRouter)
+     
         // ----------------------  WORKS  ----------------------
         //new create-work
         //prettier-ignore
