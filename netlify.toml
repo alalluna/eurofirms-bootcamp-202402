@@ -1,9 +1,8 @@
-
 [build]
 
   publish = "dist"
   command = "npm install && npm run build"
-  base = "app" # Aunque ya lo tienes en la UI, no está de más ser explícito
+  base = "app"
  
 [redirects]
   from = "/*"
