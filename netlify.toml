@@ -4,7 +4,7 @@
   command = "npm install && npm run build"
   base = "app"
  
-[redirects]
+[[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
