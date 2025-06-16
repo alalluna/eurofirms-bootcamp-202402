@@ -1,6 +1,6 @@
 // api/middlewares/handleError.js
 import errors from 'com/errors.js'
-const { ValidationError, NotFoundError, CredentialsError, UnauthorizedError, AuthorshipError, DuplicityError } = errors
+const { ValidationError, NotFoundError, CredentialsError, ContentError,UnauthorizedError, AuthorshipError, DuplicityError } = errors
 function handleError(error, req, res, next) {
   if (error instanceof ValidationError || error instanceof ContentError)
     return res.status(400).json({ error: error.constructor.name, message: error.message })

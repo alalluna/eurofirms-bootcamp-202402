@@ -1,6 +1,6 @@
 import { errors, validate } from 'com'
 
-const { SystemError, MatchError, ContentError } = errors
+const { SystemError } = errors
 
 async function createWork(title, imageFile, text) {
     validate.token(sessionStorage.token)

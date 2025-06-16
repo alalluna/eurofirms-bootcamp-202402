@@ -4,6 +4,7 @@
   "dependencies": {
     "axios": "^1.7.7",
     "caniuse-lite": "^1.0.30001717",
+    "cloudinary": "^2.6.1",
     "date-fns": "^3.6.0",
     "framer-motion": "^12.11.0",
     "googleapis": "^144.0.0",
