@@ -11,6 +11,7 @@ import { uploadFile } from './util/uploadFile.js'
 import handleError from './middlewares/handleError.js'
 import verifyToken from './middlewares/verifyToken.js'
 import usersRouter from './routes/users/index.js'
+import worksRouter from './routes/works/index.js'
 
 dotenv.config() // Cargar variables de entorno
 // const { JsonWebTokenError, TokenExpiredError } = jwt
@@ -161,6 +162,7 @@ mongoose.connect(MONGO_URL)
         server.use('/users', usersRouter)
      
         // ----------------------  WORKS  ----------------------
+        server.use('works', worksRouter)
         //new create-work
         //prettier-ignore
         // server.post('/works', verifyToken, upload.fields([{ name: 'image', maxCount: 1 }]), async (req, res, next) => {
