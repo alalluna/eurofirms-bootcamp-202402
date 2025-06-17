@@ -1,6 +1,6 @@
 import logic from '../../logic/index.js'
 
-import { uploadFile } from './util/uploadFile.js'
+import { uploadFile } from '../../util/uploadFile.js'
 
 export default async (req, res, next) => {
     try {
