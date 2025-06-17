@@ -118,6 +118,9 @@ function Login({ onUserLoggedIn, onHomeClick, onLoginClick, onContactClick, onCo
               <Button type='submit' className='mt-4'>LOGIN</Button>
               {error?.anotherError && <span className='text-[#C13E65] text-xs'>{error.message}</span>}
             </Form>
+
+            <h3 className='text-md text-center pt-2'>Puedes acceder con las siguientes credenciales</h3>
+            <p className='text-sm text-center' > con email: "xxxxxxxx@gmail.com" password: "xxxxxxy@" </p>
           </div>
         </div>
       </main>

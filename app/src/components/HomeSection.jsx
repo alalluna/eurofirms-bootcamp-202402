@@ -20,9 +20,10 @@ const HomeSection = ({ user }) => {
     })
 
     return (
-       <div className='relative w-full flex flex-col justify-between bg-[whitesmoke] overflow-hidden'>
+        <div className='relative w-full flex flex-col justify-between bg-[whitesmoke] overflow-hidden'>
+            <div className='h-16 w-full'></div>
             <h2 className='text-3xl font-bold text-center text-cyan-800 mb-6'>
-                Next activities
+                Principal events
             </h2>
 
             <div className='flex flex-col md:flex-row gap-4 px-4'>
@@ -30,9 +31,10 @@ const HomeSection = ({ user }) => {
                 <CalendarSection />
             </div>
 
-            
 
+            <div className='h-16 w-full'></div>
         </div>
+        
     )
 }
 export default HomeSection

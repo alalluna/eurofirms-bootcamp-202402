@@ -32,7 +32,7 @@ const handlePageTurn = () => {
 
       {/* No usar motion.div para HomeSection */}
       {showHome && (
-        <div className='absolute inset-0'>
+        <div className='justify-center items-center'>
           <HomeSection />
         </div>
       )}

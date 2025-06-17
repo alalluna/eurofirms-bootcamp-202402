@@ -12,7 +12,7 @@ import retrieveUser from './retrieveUser.js'
 
 router.post('/students', verifyToken, jsonBodyParser, registerStudent)
 router.post('/teachers', verifyToken, jsonBodyParser, registerTeacher)
-router.post('/auth',jsonBodyParser, authUser)
+router.post('/auth', jsonBodyParser, authUser)
 router.get('/:targetUserId', verifyToken, retrieveUser)
 
 export default router
