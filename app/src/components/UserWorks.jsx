@@ -7,9 +7,7 @@ import { errors } from 'com'
 const { MatchError, ContentError } = errors
 
 function UserWorks({ targetUserId, refreshStamp, user, onProfileClick, isProfilePage }) {
-    console.log('refreshStamp', refreshStamp)
-    console.log('targetUserId', targetUserId)
-
+   
     const [works, setWorks] = useState([])
     const [comments, setComments] = useState([])
 

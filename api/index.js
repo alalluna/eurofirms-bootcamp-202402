@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 import express from 'express'
 import cors from 'cors'
-import jwt from 'jsonwebtoken'
+import { oauth2Client } from './config/googleClient.js'
 import dotenv from 'dotenv'
 import { google } from 'googleapis'
 
@@ -12,18 +12,13 @@ import handleError from './middlewares/handleError.js'
 import verifyToken from './middlewares/verifyToken.js'
 import usersRouter from './routes/users/index.js'
 import worksRouter from './routes/works/index.js'
+import profileRouter from './routes/profile/index.js'
+import calendarRouter from './routes/calendar/index.js'
 
 dotenv.config() // Cargar variables de entorno
 // const { JsonWebTokenError, TokenExpiredError } = jwt
 
 const { PORT, MONGO_URL, JWT_SECRET, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REDIRECT_URI } = process.env
-
-// Configuración de Google OAuth
-const oauth2Client = new google.auth.OAuth2(
-    GOOGLE_CLIENT_ID,
-    GOOGLE_CLIENT_SECRET,
-    GOOGLE_REDIRECT_URI
-)
 
 mongoose.connect(MONGO_URL)
     .then(() => {
@@ -94,270 +89,22 @@ mongoose.connect(MONGO_URL)
             }
         })
 
-        // Obtener eventos del calendario de Google
 
-        server.get('/calendar/events', async (req, res, next) => {
-            try {
-                let userId = null
-                const { authorization } = req.headers
-                if (authorization?.startsWith('Bearer ')) {
-                    const token = authorization.slice(7)
 
-                    try {
-                        const { sub } = jwt.verify(token, JWT_SECRET)
-                        userId = sub
-                    } catch (err) {
-                        // Token inválido: simplemente seguimos sin userId
-                        console.warn('Token inválido:', err.message)
-                    }
-                }
-
-                if (!userId) {
-                    return res.json([]) // O podrías devolver eventos públicos por defecto
-                }
-
-                const googleTokens = await logic.getGoogleTokens(userId)
-                oauth2Client.setCredentials(googleTokens)
-                const calendar = google.calendar({ version: 'v3', auth: oauth2Client })
-                const { data } = await calendar.events.list({
-                    calendarId: 'primary',
-                    timeMin: new Date().toISOString(),
-                    maxResults: 10,
-                    singleEvents: true,
-                    orderBy: 'startTime',
-                })
-
-                res.json(data.items)
-
-            } catch (error) {
-                next(error)
-            }
-        })
-
-        // Crear un evento en Google Calendar
-
-        server.post('/calendar/events', verifyToken, jsonBodyParser, async (req, res, next) => {
-            try {
-                // Recupera los tokens de Google guardados en tu base de datos
-                const { userId } = req
-                const googleTokens = await logic.getGoogleTokens(userId)
-                oauth2Client.setCredentials(googleTokens)
-                const calendar = google.calendar({ version: 'v3', auth: oauth2Client })
-                const event = req.body
-                const { data } = await calendar.events.insert({
-                    calendarId: 'primary',
-                    resource: event,
-                })
-
-                res.status(201).json(data)
-
-            } catch (error) {
-                next(error)
-            }
-        })
-
+        server.use('/calendar', calendarRouter)
 
         // ---------------------- USERS ----------------------
-        //registerStudent
+     
         server.use('/users', usersRouter)
      
         // ----------------------  WORKS  ----------------------
         server.use('/works', worksRouter)
-        //new create-work
-        //prettier-ignore
-        server.post('/works', verifyToken, upload.fields([{ name: 'image', maxCount: 1 }]), async (req, res, next) => {
-            try {
-                const { title, text } = req.body;
-                const file = req.files && req.files.image && req.files.image[0]
-
-                if (!file) return res.status(400).json({ error: 'No file uploaded' })
-
-                const { downloadURL } = await uploadFile(file)
-                const imageUrl = downloadURL
-                const { userId } = req
-                const createdWork = await logic.createWork(userId, title, imageUrl, text)
-
-                res.status(201).json(createdWork)
-
-            } catch (error) {
-                next(error)
-            }
-        })
-
-        //removeWork
-
-        server.delete('/works/:workId', verifyToken, async (req, res, next) => {
-            try {
-                const { userId } = req
-                const { workId } = req.params
-                await logic.removeWork(userId, workId)
-                res.status(204).send()
-
-            } catch (error) {
-                next(error)
-            }
-        })
-
-        //update work
-
-        server.patch('/works/:workId', verifyToken, jsonBodyParser, async (req, res, next) => {
-            try {
-                const { userId } = req
-                const { workId } = req.params
-                const { title, text } = req.body
-                await logic.updateWork(userId, workId, title, text)
-                res.status(204).send()
-
-            } catch (error) {
-                next(error)
-            }
-        })
-
-        //retrieveWorks
-
-        server.get('/works', verifyToken, async (req, res, next) => {
-            try {
-                const { userId } = req
-                const { searchQuery } = req.query
-
-                let works
-
-                if (searchQuery) {
-                    works = await logic.searchWorks(userId, searchQuery)
-                } else {
-                    works = await logic.retrieveWorks(userId)
-                }
-
-                res.status(200).json(works)
-            } catch (error) {
-                next(error)
-            }
-        })
-
-        //like a work
-
-        server.put('/works/:workId/likes', async(req, res, next) => {
-            try {
-                const { authorization } = req.headers
-
-                const token = authorization.slice(7)
-
-                const { sub: userId } = jwt.verify(token, JWT_SECRET)
-
-                const { workId } = req.params
-                await logic.giveLikeWork(userId, workId)
-                
-                res.status(204).send()
-        
-            } catch (error) {
-                next(error)
-            }
-        })
-        //searchWorks
-
-        server.get('/works/search', verifyToken, async (req, res, next) => {
-            try {
-                const { userId } = req
-                const { q } = req.query
-                const works = await logic.searchWorks(userId, q)
-                res.status(200).json(works)
-
-            } catch (error) {
-                next(error)
-            }
-
-        })
-
-        // ---------------------- COMMENTS ----------------------
-        // createComment
-
-        server.post('/works/:workId/comments', verifyToken, jsonBodyParser, async (req, res, next) => {
-            try {
-                const { userId } = req
-                const { workId } = req.params
-                const { text } = req.body
-                await logic.createComment(userId, workId, text)
-                res.status(201).send()
-
-            } catch (error) {
-                next(error)
-            }
-        })
-
-
-        // removeComment
-
-        server.delete('/works/:workId/comments/:commentId', verifyToken, async (req, res, next) => {
-            try {
-                const { userId } = req
-                const { workId, commentId } = req.params
-                await logic.removeComment(userId, workId, commentId)
-                res.status(204).send()
-
-            } catch (error) {
-                next(error)
-            }
-        })
-
-        //retrieveComment
-
-        server.get('/works/:workId/comments/:commentId', verifyToken, async (req, res, next) => {
-            try {
-                const { userId } = req
-                const { workId, commentId } = req.params
-                const comment = await logic.retrieveComment(userId, workId, commentId)
-                res.status(200).json(comment)
-
-            } catch (error) {
-                next(error)
-            }
-        })
-
-        //retrieveComments
-
-        server.get('/works/:workId/comments/', verifyToken, async (req, res, next) => {
-            try {
-                const { userId } = req
-                const { workId } = req.params
-                const comments = await logic.retrieveComments(userId, workId)
-                res.status(200).json(comments)
-
-            } catch (error) {
-                next(error)
-            }
-        })
-
-        //update comment
-
-        server.patch('/works/:workId/comments/:commentId', verifyToken, jsonBodyParser, async (req, res, next) => {
-            try {
-                const { userId } = req
-                const { workId, commentId } = req.params
-                const { text } = req.body
-                await logic.updateComment(userId, workId, commentId, text)
-                res.status(204).send()
-
-            } catch (error) {
-                next(error)
-            }
-        })
-
+       
       
         // ---------------------- PROFILE ----------------------
-        // retrieveUserWorks
 
-        server.get('/profile/:targetUserId/works', verifyToken, async (req, res, next) => {
-            try {
-                const { userId } = req
-                const { targetUserId } = req.params
-                const works = await logic.retrieveUserWorks(userId, targetUserId)
-                res.status(200).json(works)
-
-            } catch (error) {
-                next(error)
-            }
-        })
-
+         server.use('/profile', profileRouter)
+   
         // ---------------------- LESSONS ----------------------
         //createLesson
 
@@ -431,7 +178,260 @@ mongoose.connect(MONGO_URL)
         server.listen(PORT, () => console.log('API started at port ' + PORT))
     })
     .catch(error => console.error('Error connecting to DB', error))
+        // Obtener eventos del calendario de Google
 
+        // server.get('/calendar/events', async (req, res, next) => {
+        //     try {
+        //         let userId = null
+        //         const { authorization } = req.headers
+        //         if (authorization?.startsWith('Bearer ')) {
+        //             const token = authorization.slice(7)
+
+        //             try {
+        //                 const { sub } = jwt.verify(token, JWT_SECRET)
+        //                 userId = sub
+        //             } catch (err) {
+        //                 // Token inválido: simplemente seguimos sin userId
+        //                 console.warn('Token inválido:', err.message)
+        //             }
+        //         }
+
+        //         if (!userId) {
+        //             return res.json([]) // O podrías devolver eventos públicos por defecto
+        //         }
+
+        //         const googleTokens = await logic.getGoogleTokens(userId)
+        //         oauth2Client.setCredentials(googleTokens)
+        //         const calendar = google.calendar({ version: 'v3', auth: oauth2Client })
+        //         const { data } = await calendar.events.list({
+        //             calendarId: 'primary',
+        //             timeMin: new Date().toISOString(),
+        //             maxResults: 10,
+        //             singleEvents: true,
+        //             orderBy: 'startTime',
+        //         })
+
+        //         res.json(data.items)
+
+        //     } catch (error) {
+        //         next(error)
+        //     }
+        // })
+
+        // Crear un evento en Google Calendar
+
+        // server.post('/calendar/events', verifyToken, jsonBodyParser, async (req, res, next) => {
+        //     try {
+        //         // Recupera los tokens de Google guardados en tu base de datos
+        //         const { userId } = req
+        //         const googleTokens = await logic.getGoogleTokens(userId)
+        //         oauth2Client.setCredentials(googleTokens)
+        //         const calendar = google.calendar({ version: 'v3', auth: oauth2Client })
+        //         const event = req.body
+        //         const { data } = await calendar.events.insert({
+        //             calendarId: 'primary',
+        //             resource: event,
+        //         })
+
+        //         res.status(201).json(data)
+
+        //     } catch (error) {
+        //         next(error)
+        //     }
+        // })
+ //new create-work
+        //prettier-ignore
+        // server.post('/works', verifyToken, upload.fields([{ name: 'image', maxCount: 1 }]), async (req, res, next) => {
+        //     try {
+        //         const { title, text } = req.body;
+        //         const file = req.files && req.files.image && req.files.image[0]
+
+        //         if (!file) return res.status(400).json({ error: 'No file uploaded' })
+
+        //         const { downloadURL } = await uploadFile(file)
+        //         const imageUrl = downloadURL
+        //         const { userId } = req
+        //         const createdWork = await logic.createWork(userId, title, imageUrl, text)
+
+        //         res.status(201).json(createdWork)
+
+        //     } catch (error) {
+        //         next(error)
+        //     }
+        // })
+
+        //removeWork
+
+        // server.delete('/works/:workId', verifyToken, async (req, res, next) => {
+        //     try {
+        //         const { userId } = req
+        //         const { workId } = req.params
+        //         await logic.removeWork(userId, workId)
+        //         res.status(204).send()
+
+        //     } catch (error) {
+        //         next(error)
+        //     }
+        // })
+
+        //update work
+
+        // server.patch('/works/:workId', verifyToken, jsonBodyParser, async (req, res, next) => {
+        //     try {
+        //         const { userId } = req
+        //         const { workId } = req.params
+        //         const { title, text } = req.body
+        //         await logic.updateWork(userId, workId, title, text)
+        //         res.status(204).send()
+
+        //     } catch (error) {
+        //         next(error)
+        //     }
+        // })
+
+        //retrieveWorks
+
+        // server.get('/works', verifyToken, async (req, res, next) => {
+        //     try {
+        //         const { userId } = req
+        //         const { searchQuery } = req.query
+
+        //         let works
+
+        //         if (searchQuery) {
+        //             works = await logic.searchWorks(userId, searchQuery)
+        //         } else {
+        //             works = await logic.retrieveWorks(userId)
+        //         }
+
+        //         res.status(200).json(works)
+        //     } catch (error) {
+        //         next(error)
+        //     }
+        // })
+
+        //like a work
+
+        // server.put('/works/:workId/likes', async(req, res, next) => {
+        //     try {
+        //         const { authorization } = req.headers
+
+        //         const token = authorization.slice(7)
+
+        //         const { sub: userId } = jwt.verify(token, JWT_SECRET)
+
+        //         const { workId } = req.params
+        //         await logic.giveLikeWork(userId, workId)
+                
+        //         res.status(204).send()
+        
+        //     } catch (error) {
+        //         next(error)
+        //     }
+        // })
+        //searchWorks
+
+        // server.get('/works/search', verifyToken, async (req, res, next) => {
+        //     try {
+        //         const { userId } = req
+        //         const { q } = req.query
+        //         const works = await logic.searchWorks(userId, q)
+        //         res.status(200).json(works)
+
+        //     } catch (error) {
+        //         next(error)
+        //     }
+
+        // })
+
+        // ---------------------- COMMENTS ----------------------
+        // createComment
+
+        // server.post('/works/:workId/comments', verifyToken, jsonBodyParser, async (req, res, next) => {
+        //     try {
+        //         const { userId } = req
+        //         const { workId } = req.params
+        //         const { text } = req.body
+        //         await logic.createComment(userId, workId, text)
+        //         res.status(201).send()
+
+        //     } catch (error) {
+        //         next(error)
+        //     }
+        // })
+
+
+        // removeComment
+
+        // server.delete('/works/:workId/comments/:commentId', verifyToken, async (req, res, next) => {
+        //     try {
+        //         const { userId } = req
+        //         const { workId, commentId } = req.params
+        //         await logic.removeComment(userId, workId, commentId)
+        //         res.status(204).send()
+
+        //     } catch (error) {
+        //         next(error)
+        //     }
+        // })
+
+        //retrieveComment
+
+        // server.get('/works/:workId/comments/:commentId', verifyToken, async (req, res, next) => {
+        //     try {
+        //         const { userId } = req
+        //         const { workId, commentId } = req.params
+        //         const comment = await logic.retrieveComment(userId, workId, commentId)
+        //         res.status(200).json(comment)
+
+        //     } catch (error) {
+        //         next(error)
+        //     }
+        // })
+
+        //retrieveComments
+
+        // server.get('/works/:workId/comments/', verifyToken, async (req, res, next) => {
+        //     try {
+        //         const { userId } = req
+        //         const { workId } = req.params
+        //         const comments = await logic.retrieveComments(userId, workId)
+        //         res.status(200).json(comments)
+
+        //     } catch (error) {
+        //         next(error)
+        //     }
+        // })
+
+        //update comment
+
+        // server.patch('/works/:workId/comments/:commentId', verifyToken, jsonBodyParser, async (req, res, next) => {
+        //     try {
+        //         const { userId } = req
+        //         const { workId, commentId } = req.params
+        //         const { text } = req.body
+        //         await logic.updateComment(userId, workId, commentId, text)
+        //         res.status(204).send()
+
+        //     } catch (error) {
+        //         next(error)
+        //     }
+        // })
+
+
+             // retrieveUserWorks
+
+        // server.get('/profile/:targetUserId/works', verifyToken, async (req, res, next) => {
+        //     try {
+        //         const { userId } = req
+        //         const { targetUserId } = req.params
+        //         const works = await logic.retrieveUserWorks(userId, targetUserId)
+        //         res.status(200).json(works)
+
+        //     } catch (error) {
+        //         next(error)
+        //     }
+        // })
 
 //INDEX ANTIGUO
 
