@@ -1,4 +1,3 @@
-import express from 'express'
 import jwt from 'jsonwebtoken'
 import { google } from 'googleapis'
 import logic from '../../logic/index.js'

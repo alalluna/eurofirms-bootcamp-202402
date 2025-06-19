@@ -1,19 +1,15 @@
 import mongoose from 'mongoose'
 import express from 'express'
 import cors from 'cors'
-import { oauth2Client } from './config/googleClient.js'
 import dotenv from 'dotenv'
-import { google } from 'googleapis'
-
 import logic from './logic/index.js'
-import { upload } from './config/multer.js'
-import { uploadFile } from './util/uploadFile.js'
 import handleError from './middlewares/handleError.js'
 import verifyToken from './middlewares/verifyToken.js'
 import usersRouter from './routes/users/index.js'
 import worksRouter from './routes/works/index.js'
 import profileRouter from './routes/profile/index.js'
 import calendarRouter from './routes/calendar/index.js'
+import lessonsRouter from './routes/lessons/index.js'
 
 dotenv.config() // Cargar variables de entorno
 // const { JsonWebTokenError, TokenExpiredError } = jwt
@@ -52,125 +48,23 @@ mongoose.connect(MONGO_URL)
             next()
         })
 
-        // Endpoint para iniciar el flujo de autenticación con Google
+        //Endpoints
 
-        server.get('/auth/google', (req, res) => {
-            const scopes = [
-                'https://www.googleapis.com/auth/calendar.events',
-                'https://www.googleapis.com/auth/calendar',
-                'https://www.googleapis.com/auth/userinfo.email',
-                'https://www.googleapis.com/auth/userinfo.profile'
-            ]
-
-            const authUrl = oauth2Client.generateAuthUrl({
-                access_type: 'offline',
-                scope: scopes,
-                prompt: 'consent',
-            })
-
-            res.redirect(authUrl)
-        })
-
-        // Endpoint para manejar el callback de Google
-
-        server.get('/google/redirect', async (req, res, next) => {
-            const { code } = req.query
-            try {
-                const { tokens } = await oauth2Client.getToken(code)
-
-                oauth2Client.setCredentials(tokens)
-                // Guarda los tokens en tu base de datos junto con el usuario autenticado
-                // Ejemplo: await logic.saveGoogleTokens(userId, tokens);
-
-                res.status(200).json({ message: 'Google tokens saved successfully', tokens })
-
-            } catch (error) {
-                next(error)
-            }
-        })
-
-
-
+        // ---------------------- CALENDAR GOOGLE ----------------------
         server.use('/calendar', calendarRouter)
 
         // ---------------------- USERS ----------------------
-     
         server.use('/users', usersRouter)
      
         // ----------------------  WORKS  ----------------------
         server.use('/works', worksRouter)
        
-      
         // ---------------------- PROFILE ----------------------
-
-         server.use('/profile', profileRouter)
+        server.use('/profile', profileRouter)
    
         // ---------------------- LESSONS ----------------------
-        //createLesson
-
-        server.post('/lessons', verifyToken, jsonBodyParser, async (req, res, next) => {
-            try {
-                const { userId } = req
-                const { title, image, description, link, video } = req.body
-
-                await logic.createLesson(userId, title, image, description, link, video)
-                res.status(201).send()
-            } catch (error) {
-                next(error)
-            }
-        })
-
-        //update lesson
-
-        server.patch('/lessons/:lessonId', verifyToken, jsonBodyParser, async (req, res, next) => {
-            try {
-                const { userId } = req
-                const { title, image, description, link, video } = req.body
-                await logic.updateLesson(userId, title, image, description, link, video)
-                res.status(204).send()
-
-            } catch (error) {
-                next(error)
-            }
-        })
-
-        //removeLesson
-
-        server.delete('/lessons/:lessonId', verifyToken, async (req, res, next) => {
-            try {
-                const { userId } = req
-                const { lessonId } = req.params
-                await logic.removeLesson(userId, lessonId)
-                res.status(204).send()
-
-            } catch (error) {
-                next(error)
-            }
-        })
-
-        //retrieveLessons
-
-        server.get('/lessons', verifyToken, async (req, res, next) => {
-            try {
-                const { userId } = req
-                const lessons = await logic.retrieveLessons(userId)
-                res.status(200).json(lessons)
-
-            } catch (error) {
-                next(error)
-            }
-        })
-
-        server.post('/users/details', verifyToken, async (req, res, next) => {
-            try {
-                const { userIds } = req.body
-                const users = await getUserDetailsByIds(userIds)
-                res.status(200).json(users)
-
-            } catch (error) {
-                next(error)
-            }
-        })
+        server.use('/lessons', lessonsRouter)
+        
 
         server.use(handleError)
 
@@ -178,6 +72,43 @@ mongoose.connect(MONGO_URL)
         server.listen(PORT, () => console.log('API started at port ' + PORT))
     })
     .catch(error => console.error('Error connecting to DB', error))
+
+      
+ // Endpoint para iniciar el flujo de autenticación con Google
+        // server.get('/auth/google', (req, res) => {
+        //     const scopes = [
+        //         'https://www.googleapis.com/auth/calendar.events',
+        //         'https://www.googleapis.com/auth/calendar',
+        //         'https://www.googleapis.com/auth/userinfo.email',
+        //         'https://www.googleapis.com/auth/userinfo.profile'
+        //     ]
+
+        //     const authUrl = oauth2Client.generateAuthUrl({
+        //         access_type: 'offline',
+        //         scope: scopes,
+        //         prompt: 'consent',
+        //     })
+
+        //     res.redirect(authUrl)
+        // })
+
+        // Endpoint para manejar el callback de Google
+
+        // server.get('/google/redirect', async (req, res, next) => {
+        //     const { code } = req.query
+        //     try {
+        //         const { tokens } = await oauth2Client.getToken(code)
+
+        //         oauth2Client.setCredentials(tokens)
+        //         // Guarda los tokens en tu base de datos junto con el usuario autenticado
+        //         // Ejemplo: await logic.saveGoogleTokens(userId, tokens);
+
+        //         res.status(200).json({ message: 'Google tokens saved successfully', tokens })
+
+        //     } catch (error) {
+        //         next(error)
+        //     }
+        // })
         // Obtener eventos del calendario de Google
 
         // server.get('/calendar/events', async (req, res, next) => {
@@ -427,6 +358,72 @@ mongoose.connect(MONGO_URL)
         //         const { targetUserId } = req.params
         //         const works = await logic.retrieveUserWorks(userId, targetUserId)
         //         res.status(200).json(works)
+
+        //     } catch (error) {
+        //         next(error)
+        //     }
+        // })
+
+        //createLesson
+
+        // server.post('/lessons', verifyToken, jsonBodyParser, async (req, res, next) => {
+        //     try {
+        //         const { userId } = req
+        //         const { title, image, description, link, video } = req.body
+
+        //         await logic.createLesson(userId, title, image, description, link, video)
+        //         res.status(201).send()
+        //     } catch (error) {
+        //         next(error)
+        //     }
+        // })
+
+        //update lesson
+
+        // server.patch('/lessons/:lessonId', verifyToken, jsonBodyParser, async (req, res, next) => {
+        //     try {
+        //         const { userId } = req
+        //         const { title, image, description, link, video } = req.body
+        //         await logic.updateLesson(userId, title, image, description, link, video)
+        //         res.status(204).send()
+
+        //     } catch (error) {
+        //         next(error)
+        //     }
+        // })
+
+        //removeLesson
+
+        // server.delete('/lessons/:lessonId', verifyToken, async (req, res, next) => {
+        //     try {
+        //         const { userId } = req
+        //         const { lessonId } = req.params
+        //         await logic.removeLesson(userId, lessonId)
+        //         res.status(204).send()
+
+        //     } catch (error) {
+        //         next(error)
+        //     }
+        // })
+
+        //retrieveLessons
+
+        // server.get('/lessons', verifyToken, async (req, res, next) => {
+        //     try {
+        //         const { userId } = req
+        //         const lessons = await logic.retrieveLessons(userId)
+        //         res.status(200).json(lessons)
+
+        //     } catch (error) {
+        //         next(error)
+        //     }
+        // })
+
+        // server.post('/users/details', verifyToken, async (req, res, next) => {
+        //     try {
+        //         const { userIds } = req.body
+        //         const users = await getUserDetailsByIds(userIds)
+        //         res.status(200).json(users)
 
         //     } catch (error) {
         //         next(error)

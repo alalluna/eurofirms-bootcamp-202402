@@ -6,17 +6,17 @@ const jsonBodyParser = express.json()
 const imageUpload = multerUpload.fields([{ name: 'image', maxCount: 1 }])
 const router = express.Router()
 
-import createComment from '../works/createComment.js'
-import createWork from '../works/createWork.js'
-import giveLikeWork from '../works/giveLikeWork.js'
-import removeComment from '../works/removeComment.js'
-import removeWork from '../works/removeWork.js'
-import retrieveComment from '../works/retrieveComment.js'
+import createComment from './createComment.js'
+import createWork from './createWork.js'
+import giveLikeWork from './giveLikeWork.js'
+import removeComment from './removeComment.js'
+import removeWork from './removeWork.js'
+import retrieveComment from './retrieveComment.js'
 import retrieveComments from './retrieveComments.js'
-import retrieveWorks from '../works/retrieveWorks.js'
-import searchWorks from '../works/searchWorks.js'
-import updateComment from '../works/updateComment.js'
-import updateWork from '../works/updateWork.js'
+import retrieveWorks from './retrieveWorks.js'
+import searchWorks from './searchWorks.js'
+import updateComment from './updateComment.js'
+import updateWork from './updateWork.js'
 
 router.post('/', verifyToken, imageUpload, createWork)
 router.delete('/:workId', verifyToken, removeWork)
