@@ -162,185 +162,185 @@ mongoose.connect(MONGO_URL)
         server.use('/users', usersRouter)
      
         // ----------------------  WORKS  ----------------------
-        server.use('works', worksRouter)
+        server.use('/works', worksRouter)
         //new create-work
         //prettier-ignore
-        // server.post('/works', verifyToken, upload.fields([{ name: 'image', maxCount: 1 }]), async (req, res, next) => {
-        //     try {
-        //         const { title, text } = req.body;
-        //         const file = req.files && req.files.image && req.files.image[0]
+        server.post('/works', verifyToken, upload.fields([{ name: 'image', maxCount: 1 }]), async (req, res, next) => {
+            try {
+                const { title, text } = req.body;
+                const file = req.files && req.files.image && req.files.image[0]
 
-        //         if (!file) return res.status(400).json({ error: 'No file uploaded' })
+                if (!file) return res.status(400).json({ error: 'No file uploaded' })
 
-        //         const { downloadURL } = await uploadFile(file)
-        //         const imageUrl = downloadURL
-        //         const { userId } = req
-        //         const createdWork = await logic.createWork(userId, title, imageUrl, text)
+                const { downloadURL } = await uploadFile(file)
+                const imageUrl = downloadURL
+                const { userId } = req
+                const createdWork = await logic.createWork(userId, title, imageUrl, text)
 
-        //         res.status(201).json(createdWork)
+                res.status(201).json(createdWork)
 
-        //     } catch (error) {
-        //         next(error)
-        //     }
-        // })
+            } catch (error) {
+                next(error)
+            }
+        })
 
         //removeWork
 
-        // server.delete('/works/:workId', verifyToken, async (req, res, next) => {
-        //     try {
-        //         const { userId } = req
-        //         const { workId } = req.params
-        //         await logic.removeWork(userId, workId)
-        //         res.status(204).send()
+        server.delete('/works/:workId', verifyToken, async (req, res, next) => {
+            try {
+                const { userId } = req
+                const { workId } = req.params
+                await logic.removeWork(userId, workId)
+                res.status(204).send()
 
-        //     } catch (error) {
-        //         next(error)
-        //     }
-        // })
+            } catch (error) {
+                next(error)
+            }
+        })
 
         //update work
 
-        // server.patch('/works/:workId', verifyToken, jsonBodyParser, async (req, res, next) => {
-        //     try {
-        //         const { userId } = req
-        //         const { workId } = req.params
-        //         const { title, text } = req.body
-        //         await logic.updateWork(userId, workId, title, text)
-        //         res.status(204).send()
+        server.patch('/works/:workId', verifyToken, jsonBodyParser, async (req, res, next) => {
+            try {
+                const { userId } = req
+                const { workId } = req.params
+                const { title, text } = req.body
+                await logic.updateWork(userId, workId, title, text)
+                res.status(204).send()
 
-        //     } catch (error) {
-        //         next(error)
-        //     }
-        // })
+            } catch (error) {
+                next(error)
+            }
+        })
 
         //retrieveWorks
 
-        // server.get('/works', verifyToken, async (req, res, next) => {
-        //     try {
-        //         const { userId } = req
-        //         const { searchQuery } = req.query
+        server.get('/works', verifyToken, async (req, res, next) => {
+            try {
+                const { userId } = req
+                const { searchQuery } = req.query
 
-        //         let works
+                let works
 
-        //         if (searchQuery) {
-        //             works = await logic.searchWorks(userId, searchQuery)
-        //         } else {
-        //             works = await logic.retrieveWorks(userId)
-        //         }
+                if (searchQuery) {
+                    works = await logic.searchWorks(userId, searchQuery)
+                } else {
+                    works = await logic.retrieveWorks(userId)
+                }
 
-        //         res.status(200).json(works)
-        //     } catch (error) {
-        //         next(error)
-        //     }
-        // })
+                res.status(200).json(works)
+            } catch (error) {
+                next(error)
+            }
+        })
 
         //like a work
 
-        // server.put('/works/:workId/likes', async(req, res, next) => {
-        //     try {
-        //         const { authorization } = req.headers
+        server.put('/works/:workId/likes', async(req, res, next) => {
+            try {
+                const { authorization } = req.headers
 
-        //         const token = authorization.slice(7)
+                const token = authorization.slice(7)
 
-        //         const { sub: userId } = jwt.verify(token, JWT_SECRET)
+                const { sub: userId } = jwt.verify(token, JWT_SECRET)
 
-        //         const { workId } = req.params
-        //         await logic.giveLikeWork(userId, workId)
+                const { workId } = req.params
+                await logic.giveLikeWork(userId, workId)
                 
-        //         res.status(204).send()
+                res.status(204).send()
         
-        //     } catch (error) {
-        //         next(error)
-        //     }
-        // })
+            } catch (error) {
+                next(error)
+            }
+        })
         //searchWorks
 
-        // server.get('/works/search', verifyToken, async (req, res, next) => {
-        //     try {
-        //         const { userId } = req
-        //         const { q } = req.query
-        //         const works = await logic.searchWorks(userId, q)
-        //         res.status(200).json(works)
+        server.get('/works/search', verifyToken, async (req, res, next) => {
+            try {
+                const { userId } = req
+                const { q } = req.query
+                const works = await logic.searchWorks(userId, q)
+                res.status(200).json(works)
 
-        //     } catch (error) {
-        //         next(error)
-        //     }
+            } catch (error) {
+                next(error)
+            }
 
-        // })
+        })
 
         // ---------------------- COMMENTS ----------------------
         // createComment
 
-        // server.post('/works/:workId/comments', verifyToken, jsonBodyParser, async (req, res, next) => {
-        //     try {
-        //         const { userId } = req
-        //         const { workId } = req.params
-        //         const { text } = req.body
-        //         await logic.createComment(userId, workId, text)
-        //         res.status(201).send()
+        server.post('/works/:workId/comments', verifyToken, jsonBodyParser, async (req, res, next) => {
+            try {
+                const { userId } = req
+                const { workId } = req.params
+                const { text } = req.body
+                await logic.createComment(userId, workId, text)
+                res.status(201).send()
 
-        //     } catch (error) {
-        //         next(error)
-        //     }
-        // })
+            } catch (error) {
+                next(error)
+            }
+        })
 
 
         // removeComment
 
-        // server.delete('/works/:workId/comments/:commentId', verifyToken, async (req, res, next) => {
-        //     try {
-        //         const { userId } = req
-        //         const { workId, commentId } = req.params
-        //         await logic.removeComment(userId, workId, commentId)
-        //         res.status(204).send()
+        server.delete('/works/:workId/comments/:commentId', verifyToken, async (req, res, next) => {
+            try {
+                const { userId } = req
+                const { workId, commentId } = req.params
+                await logic.removeComment(userId, workId, commentId)
+                res.status(204).send()
 
-        //     } catch (error) {
-        //         next(error)
-        //     }
-        // })
+            } catch (error) {
+                next(error)
+            }
+        })
 
         //retrieveComment
 
-        // server.get('/works/:workId/comments/:commentId', verifyToken, async (req, res, next) => {
-        //     try {
-        //         const { userId } = req
-        //         const { workId, commentId } = req.params
-        //         const comment = await logic.retrieveComment(userId, workId, commentId)
-        //         res.status(200).json(comment)
+        server.get('/works/:workId/comments/:commentId', verifyToken, async (req, res, next) => {
+            try {
+                const { userId } = req
+                const { workId, commentId } = req.params
+                const comment = await logic.retrieveComment(userId, workId, commentId)
+                res.status(200).json(comment)
 
-        //     } catch (error) {
-        //         next(error)
-        //     }
-        // })
+            } catch (error) {
+                next(error)
+            }
+        })
 
         //retrieveComments
 
-        // server.get('/works/:workId/comments/', verifyToken, async (req, res, next) => {
-        //     try {
-        //         const { userId } = req
-        //         const { workId } = req.params
-        //         const comments = await logic.retrieveComments(userId, workId)
-        //         res.status(200).json(comments)
+        server.get('/works/:workId/comments/', verifyToken, async (req, res, next) => {
+            try {
+                const { userId } = req
+                const { workId } = req.params
+                const comments = await logic.retrieveComments(userId, workId)
+                res.status(200).json(comments)
 
-        //     } catch (error) {
-        //         next(error)
-        //     }
-        // })
+            } catch (error) {
+                next(error)
+            }
+        })
 
         //update comment
 
-        // server.patch('/works/:workId/comments/:commentId', verifyToken, jsonBodyParser, async (req, res, next) => {
-        //     try {
-        //         const { userId } = req
-        //         const { workId, commentId } = req.params
-        //         const { text } = req.body
-        //         await logic.updateComment(userId, workId, commentId, text)
-        //         res.status(204).send()
+        server.patch('/works/:workId/comments/:commentId', verifyToken, jsonBodyParser, async (req, res, next) => {
+            try {
+                const { userId } = req
+                const { workId, commentId } = req.params
+                const { text } = req.body
+                await logic.updateComment(userId, workId, commentId, text)
+                res.status(204).send()
 
-        //     } catch (error) {
-        //         next(error)
-        //     }
-        // })
+            } catch (error) {
+                next(error)
+            }
+        })
 
       
         // ---------------------- PROFILE ----------------------
